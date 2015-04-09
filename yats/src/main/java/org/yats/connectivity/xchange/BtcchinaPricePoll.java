@@ -72,6 +72,7 @@ public class BtcchinaPricePoll implements IProvidePriceData
     }
 
 
+
     //////////////////////////////////////////////////////////////////////////////
 
     private OfferBook convertToOfferBook(OrderBook orderBook) {
