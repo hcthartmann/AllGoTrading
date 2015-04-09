@@ -26,9 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 00:34
  */
 
-public class PriceFeedX implements IProvidePriceFeed, Runnable {
+public class XPriceFeed implements IProvidePriceFeed, Runnable {
 
-    final Logger log = LoggerFactory.getLogger(PriceFeedX.class);
+    final Logger log = LoggerFactory.getLogger(XPriceFeed.class);
 
 
     @Override
@@ -126,7 +126,7 @@ public class PriceFeedX implements IProvidePriceFeed, Runnable {
         stopReceiving = true;
     }
 
-    public PriceFeedX(ConcurrentHashMap<String, String> _mapPidToSymbol) {
+    public XPriceFeed(ConcurrentHashMap<String, String> _mapPidToSymbol) {
         mapPidToSymbol = _mapPidToSymbol;
         subscriptionList = new ConcurrentHashMap<String, IConsumePriceData>();
         mapSymbolToPid = new ConcurrentHashMap<String, String>();

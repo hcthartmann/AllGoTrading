@@ -7,10 +7,10 @@ import com.xeiam.xchange.bitfinex.v1.BitfinexExchange;
 import com.xeiam.xchange.bitfinex.v1.dto.marketdata.BitfinexDepth;
 import com.xeiam.xchange.bitfinex.v1.dto.marketdata.BitfinexLevel;
 import com.xeiam.xchange.bitfinex.v1.service.polling.BitfinexMarketDataServiceRaw;
-import com.xeiam.xchange.exceptions.ExchangeException;
 import com.xeiam.xchange.service.polling.marketdata.PollingMarketDataService;
 import org.joda.time.DateTime;
 import org.yats.common.Decimal;
+import org.yats.common.IProvidePriceDataProvider;
 import org.yats.common.PropertiesReader;
 import org.yats.connectivity.ConnectivityExceptions;
 import org.yats.trading.*;
@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 12:56
  */
 
-public class BitfinexPricefeed implements IProvidePriceData {
+public class BitfinexPricepoll implements IProvidePriceData {
 
     @Override
     public PriceData getPriceData(String productId) {
@@ -50,15 +50,17 @@ public class BitfinexPricefeed implements IProvidePriceData {
         }
     }
 
-    public static class Factory {
-        public BitfinexPricefeed createFromProperties(PropertiesReader prop) {
+    public static class Factory implements IProvidePriceDataProvider {
+        public Factory() {}
+        @Override
+        public IProvidePriceData createFromProperties(PropertiesReader prop) {
             Exchange bfxExchange = ExchangeFactory.INSTANCE.createExchange(BitfinexExchange.class.getName());
-            BitfinexPricefeed bfxFeed = new BitfinexPricefeed(bfxExchange, prop.toMap());
+            BitfinexPricepoll bfxFeed = new BitfinexPricepoll(bfxExchange, prop.toMap());
             return bfxFeed;
         }
     }
 
-    public BitfinexPricefeed(Exchange _bfxExchange, ConcurrentHashMap<String,String> _mapPidToExchangeSymbol) {
+    public BitfinexPricepoll(Exchange _bfxExchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
         bfxExchange = _bfxExchange;
         mapPidToExchangeSymbol = _mapPidToExchangeSymbol;
     }
