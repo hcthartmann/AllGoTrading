@@ -29,7 +29,7 @@ public class BitfinexPricePoll implements IProvidePriceData {
     @Override
     public PriceData getPriceData(String productId) {
         String xPid = mapPidToExchangeSymbol.get(productId);
-        PollingMarketDataService marketDataService = bfxExchange.getPollingMarketDataService();
+        PollingMarketDataService marketDataService = exchange.getPollingMarketDataService();
         try {
             BitfinexDepth bitfinexDepth = ((BitfinexMarketDataServiceRaw)marketDataService).getBitfinexOrderBook(xPid, 50, 50);
 
@@ -60,8 +60,8 @@ public class BitfinexPricePoll implements IProvidePriceData {
         }
     }
 
-    public BitfinexPricePoll(Exchange _bfxExchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
-        bfxExchange = _bfxExchange;
+    public BitfinexPricePoll(Exchange _exchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
+        exchange = _exchange;
         mapPidToExchangeSymbol = _mapPidToExchangeSymbol;
     }
 
@@ -82,7 +82,7 @@ public class BitfinexPricePoll implements IProvidePriceData {
     }
 
 
-    private Exchange bfxExchange;
+    private Exchange exchange;
     private ConcurrentHashMap<String,String> mapPidToExchangeSymbol;
 
 

@@ -21,13 +21,4 @@ public class BitfinexPricefeedMain  {
         System.exit(0);
     }
 
-
-    public BitfinexPricefeedMain() {
-
-
-    }
-
-
-
-
 } // class

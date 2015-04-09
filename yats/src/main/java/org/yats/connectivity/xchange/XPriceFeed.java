@@ -52,7 +52,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
             try {
                 Thread.yield();
                 receive();
-                Tool.sleepFor(500);
+                Tool.sleepFor(5000);
             }
             catch(IOException e) {
                 log.error("network error");
