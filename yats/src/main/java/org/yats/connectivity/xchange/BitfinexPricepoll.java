@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 12:56
  */
 
-public class BitfinexPricepoll implements IProvidePriceData {
+public class BitfinexPricePoll implements IProvidePriceData {
 
     @Override
     public PriceData getPriceData(String productId) {
@@ -55,12 +55,12 @@ public class BitfinexPricepoll implements IProvidePriceData {
         @Override
         public IProvidePriceData createFromProperties(PropertiesReader prop) {
             Exchange bfxExchange = ExchangeFactory.INSTANCE.createExchange(BitfinexExchange.class.getName());
-            BitfinexPricepoll bfxFeed = new BitfinexPricepoll(bfxExchange, prop.toMap());
+            BitfinexPricePoll bfxFeed = new BitfinexPricePoll(bfxExchange, prop.toMap());
             return bfxFeed;
         }
     }
 
-    public BitfinexPricepoll(Exchange _bfxExchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
+    public BitfinexPricePoll(Exchange _bfxExchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
         bfxExchange = _bfxExchange;
         mapPidToExchangeSymbol = _mapPidToExchangeSymbol;
     }
@@ -79,18 +79,6 @@ public class BitfinexPricepoll implements IProvidePriceData {
         }
         OfferBook book = new OfferBook(bids, asks);
         return book;
-    }
-
-
-    private Decimal getPriceForAmount(BitfinexLevel[] book, double amount) {
-        double sum=0.0;
-        for(int i=0; i<book.length; i++) {
-            sum+=book[i].getAmount().doubleValue();
-            if(sum>=amount) {
-                return new Decimal(book[i].getPrice());
-            }
-        }
-        return new Decimal(book[book.length-1].getPrice());
     }
 
 

@@ -8,8 +8,10 @@ import org.yats.common.UniqueId;
 import org.yats.connectivity.messagebus.MarketToBusConnection;
 import org.yats.connectivity.oandarest.FXOrders;
 import org.yats.connectivity.oandarest.PriceFeed;
+import org.yats.connectivity.xchange.BitfinexPricePoll;
 import org.yats.trader.StrategyRunner;
 import org.yats.trading.IConsumePriceData;
+import org.yats.trading.IProvidePriceData;
 import org.yats.trading.PriceData;
 import org.yats.trading.ProductList;
 
