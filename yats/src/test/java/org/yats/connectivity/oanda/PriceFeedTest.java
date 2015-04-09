@@ -18,8 +18,7 @@ public class PriceFeedTest {
             "OANDA_EURGBP=EUR_GBP\n" +
             "OANDA_EURCHF=EUR_CHF";
 
-//    Not really a test since it takes too long and depends on external connection.
-    @Test
+    @Test(groups = { "internet" })
     public void canReceiveEURUSD()
     {
         Tool.sleepFor(5000);
@@ -30,7 +29,7 @@ public class PriceFeedTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         PropertiesReader p = PropertiesReader.createFromConfigString(CONFIG);
         priceFeed = new PriceFeed(p);

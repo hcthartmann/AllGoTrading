@@ -19,7 +19,7 @@ public class SenderReceiverTest {
 //    private static final String CATCH_ALL_TOPIC = "#";
 
 
-    @Test(groups = { "inMemory" })
+    @Test(groups = { "internet" })
     public void canSendAndReceivePriceData()
     {
         senderPriceData.publish(dataMsg.getTopic(), dataMsg);
@@ -31,7 +31,7 @@ public class SenderReceiverTest {
         assert (newData.isSameAs(data));
     }
 
-    @Test(groups = { "inMemory" })
+    @Test(groups = { "internet" })
     public void canSendAndReceivePositionSnapshot()
     {
         PositionSnapshotMsg positionSnapshotMsg = PositionSnapshotMsg.fromPositionSnapshot(positionSnapshot);
@@ -45,7 +45,7 @@ public class SenderReceiverTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         Config config = Config.DEFAULT_FOR_TESTS;
         senderPriceData = new Sender<PriceDataMsg>(config.getExchangePriceData(),config.getServerIP());
@@ -72,7 +72,7 @@ public class SenderReceiverTest {
         positionSnapshot.add(new AccountPosition("product1", "account2", Decimal.fromDouble(13)));
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         senderPriceData.close();
         senderPositionSnapshot.close();

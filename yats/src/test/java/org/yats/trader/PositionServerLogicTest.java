@@ -17,7 +17,7 @@ public class PositionServerLogicTest {
 
     //final Logger log = LoggerFactory.getLogger(PositionServerLogicTest.class);
 
-    @Test(groups = { "inMemory" })
+    @Test(groups = { "internet" })
     public void canInitializeOnePositionServerFromAnother()
     {
         PositionServerMain logic1 = new PositionServerMain(prop);
@@ -42,7 +42,7 @@ public class PositionServerLogicTest {
         logic2.close();
     }
 
-    @Test(groups = { "inMemory" })
+    @Test(groups = { "internet" })
     public void canStorePositionSnapshot() {
 
         config.setStorePositionsToDisk(true);
@@ -59,7 +59,7 @@ public class PositionServerLogicTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         productList = ProductList.createFromFile(ProductListTest.PRODUCT_LIST_PATH);
         prop = Config.createTestProperties();
@@ -69,7 +69,7 @@ public class PositionServerLogicTest {
         positionStorage = new PositionSnapshotStorageMem();
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         senderReceipts.close();
     }

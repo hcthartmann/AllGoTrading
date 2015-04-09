@@ -123,7 +123,8 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     public void waitForProcessingQueues() {
         try {
-            while(!updatedProductQueue.isEmpty()) Thread.sleep(200);
+            Thread.sleep(10);
+            while(!updatedProductQueue.isEmpty()) Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());

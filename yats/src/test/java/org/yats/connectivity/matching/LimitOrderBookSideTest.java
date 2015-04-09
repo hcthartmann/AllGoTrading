@@ -86,7 +86,7 @@ public class LimitOrderBookSideTest implements IConsumeReceipt {
         assert(askSideString.compareTo(expected)==0);
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         bookBid = new LimitOrderBookSide(BookSide.BID, this);
         bookAsk = new LimitOrderBookSide(BookSide.ASK, this);

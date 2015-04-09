@@ -1,5 +1,7 @@
 package org.yats.trading;
 
+import org.yats.common.Decimal;
+
 public class OfferBook {
 
     public static final String CSV_SEPARATOR = "|";
@@ -23,6 +25,10 @@ public class OfferBook {
 
     public int getDepth(BookSide _side) {
         return bookSides[_side.toIndex()].size();
+    }
+
+    public Decimal getPriceForSize(BookSide _side, double thresholdSize) {
+        return bookSides[_side.toIndex()].getPriceForSize(thresholdSize);
     }
 
     public BookRow getBookRow(BookSide _side, int index) {

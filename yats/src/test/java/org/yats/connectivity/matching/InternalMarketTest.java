@@ -136,7 +136,7 @@ public class InternalMarketTest implements IConsumeReceipt, IConsumePriceData {
         }
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         ProductList products = ProductList.createFromFile(ProductList.PATH);
         market = new InternalMarket(ProductTest.TEST_EXTACCOUNT, ProductTest.TEST_MARKET);

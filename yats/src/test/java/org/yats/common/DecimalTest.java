@@ -70,7 +70,7 @@ public class DecimalTest {
 
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         tickSize0001 = new Decimal("0.001");
         tickSize001 = new Decimal("0.01");

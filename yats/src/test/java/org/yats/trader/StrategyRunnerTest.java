@@ -4,7 +4,9 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.yats.common.TestStopwatchListener;
 import org.yats.common.Decimal;
 import org.yats.common.IProvideProperties;
 import org.yats.common.Tool;
@@ -12,7 +14,7 @@ import org.yats.trading.*;
 
 
 
-
+@Listeners({org.yats.common.TestStopwatchListener.class})
 public class StrategyRunnerTest {
 
     /*
@@ -28,14 +30,14 @@ public class StrategyRunnerTest {
 
     private static String ACCOUNT = "testAccount";
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canDoSubscriptionForPriceData()
     {
         strategy.init();
         assert (strategyRunner.isProductSubscribed(TestPriceData.TEST_SAP_PID));
     }
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canReceivePriceDataAndSendToStrategy()
     {
         assert (strategy.priceDataReceived == 0);
@@ -45,7 +47,7 @@ public class StrategyRunnerTest {
         assert (strategy.priceDataReceived == 1);
     }
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canSendOrderAndReceivesReceipt()
     {
         strategy.sendBuyOrder();
@@ -54,7 +56,7 @@ public class StrategyRunnerTest {
         assert (strategy.getPosition() == 0);
     }
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canSendMarketCrossingOrderAndReceivesFilledReceipt()
     {
         orderConnection.setFillOrderImmediately();
@@ -64,7 +66,7 @@ public class StrategyRunnerTest {
         assert (strategy.getPosition() == 5);
     }
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canCancelOrder()
     {
         strategy.sendBuyOrder();
@@ -76,7 +78,7 @@ public class StrategyRunnerTest {
         assert (strategy.getPosition() == 0);
     }
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canProcessPartialFill()
     {
         orderConnection.init();
@@ -93,7 +95,7 @@ public class StrategyRunnerTest {
         assert (strategy.getPosition() == 5);
     }
 
-    @Test
+    @Test(groups = { "inMemory" })
     public void canCalculatePositionSizeAndValue()
     {
         orderConnection.init();
@@ -111,21 +113,22 @@ public class StrategyRunnerTest {
     }
 
 
-    @Test
-    public void canCallbackOnTime()
+    // the minimum resolution for callback on time is one second. so this test takes a bit longer..
+    @Test(groups = { "slow" })
+    public void canCallbackAfterOneSecond()
     {
         strategy.init();
         assert(!strategy.isCalledBackByTimer());
         while(!strategy.isCalledBackByTimer()) {
             System.out.println("waiting for callback... "+DateTime.now());
-            Tool.sleepFor(300);
+            Tool.sleepFor(10);
         }
         assert(strategy.isCalledBackByTimer());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun=true)
     public void setUp() {
         data1 = new PriceData(DateTime.now(DateTimeZone.UTC), TestPriceData.TEST_SAP_PID,
                 Decimal.fromDouble(10), Decimal.fromDouble(11), Decimal.fromDouble(11),
@@ -158,7 +161,7 @@ public class StrategyRunnerTest {
 
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         strategyRunner.stop();
     }

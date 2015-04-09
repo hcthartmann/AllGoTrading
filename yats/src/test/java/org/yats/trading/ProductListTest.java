@@ -55,7 +55,7 @@ public class ProductListTest {
 
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         list = new ProductList();
         list.read(PRODUCT_LIST_PATH);

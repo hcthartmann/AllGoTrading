@@ -24,7 +24,7 @@ public class OfferBookTest {
         assert(book.getBookRow(BookSide.BID, 1).isSize(Decimal.fromString("11")));
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         book = new OfferBook();
         book.addBid("10", "22");

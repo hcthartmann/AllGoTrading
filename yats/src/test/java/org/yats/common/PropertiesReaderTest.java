@@ -18,7 +18,7 @@ public class PropertiesReaderTest {
         assert (!PropertiesReader.fromBooleanString("dontknow"));
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
     }
 

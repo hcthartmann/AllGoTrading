@@ -109,7 +109,7 @@ public class PositionServerTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         positionServer = new PositionServer();
         productList = ProductList.createFromFile(ProductListTest.PRODUCT_LIST_PATH);

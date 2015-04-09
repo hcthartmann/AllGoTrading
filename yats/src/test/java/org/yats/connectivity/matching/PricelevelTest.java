@@ -37,7 +37,7 @@ public class PricelevelTest implements IConsumeReceipt {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         Decimal levelPrice = Decimal.fromString("10");
         level = new PriceLevel(levelPrice, this);

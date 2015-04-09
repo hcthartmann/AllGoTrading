@@ -37,7 +37,7 @@ public class MessageConversionTest {
         }
 
 
-        @BeforeMethod(groups = { "inMemory" })
+        @BeforeMethod(alwaysRun = true)
         public void setUp() {
             positionRequest = new PositionRequest(ProductTest.ACCOUNT1, ProductTest.TEST_PRODUCT1_ID);
 

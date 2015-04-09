@@ -28,7 +28,7 @@ public class PositionStorageCSVTest {
         FileTool.deleteFile(filename);
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
 
     }

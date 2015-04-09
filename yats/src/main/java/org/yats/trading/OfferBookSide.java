@@ -1,5 +1,8 @@
 package org.yats.trading;
 
+import com.xeiam.xchange.bitfinex.v1.dto.marketdata.BitfinexLevel;
+import org.yats.common.Decimal;
+
 import java.util.Vector;
 
 public class OfferBookSide { // implements List<BookRow> {
@@ -47,6 +50,16 @@ public class OfferBookSide { // implements List<BookRow> {
     }
 
 
+    public Decimal getPriceForSize(double thresholdSize) {
+        double sum = 0.0;
+        for(int i=0; i<bookHalf.size(); i++) {
+            sum+=bookHalf.get(i).getSize().toDouble();
+            if(sum>=thresholdSize) {
+                return bookHalf.get(i).getPrice();
+            }
+        }
+        return bookHalf.lastElement().getPrice();
+    }
 
     ////////////////////////////////////////////////////////////////////
 

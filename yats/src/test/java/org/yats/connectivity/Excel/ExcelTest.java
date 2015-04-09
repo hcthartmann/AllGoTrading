@@ -68,7 +68,7 @@ public class ExcelTest {
         assert( mockToReports.getLastPokeString().compareTo(expectedRow1)==0);
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setup()
     {
         mockToReports = new MockExcelLinkReports();

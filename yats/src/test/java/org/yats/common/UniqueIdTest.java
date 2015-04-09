@@ -22,7 +22,7 @@ public class UniqueIdTest {
         }
 
 
-        @BeforeMethod(groups = { "inMemory" })
+        @BeforeMethod(alwaysRun = true)
         public void setUp() {
             id1 = UniqueId.create();
         }

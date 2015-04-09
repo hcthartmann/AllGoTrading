@@ -15,7 +15,7 @@ public class FileToolTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
 
     }

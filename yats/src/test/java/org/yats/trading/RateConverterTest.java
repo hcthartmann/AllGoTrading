@@ -124,7 +124,7 @@ public class RateConverterTest {
         assert(converter.isChainInCache(p2.getProductId(), TestPriceData.TEST_SAP_PID));
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         ProductList productList = ProductList.createFromFile(ProductListTest.PRODUCT_LIST_PATH);
         converter = new RateConverter(productList);

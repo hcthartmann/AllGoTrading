@@ -89,7 +89,7 @@ public class PositionSnapshotTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         productList = new ProductList();
         productList.read(ProductListTest.PRODUCT_LIST_PATH);

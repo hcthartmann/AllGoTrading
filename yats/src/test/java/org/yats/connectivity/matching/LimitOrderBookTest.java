@@ -66,7 +66,7 @@ public class LimitOrderBookTest implements IConsumePriceDataAndReceipt {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         book = new LimitOrderBook(ProductTest.TEST_PRODUCT1_ID, this);
         bid100At10 = new OrderNew()

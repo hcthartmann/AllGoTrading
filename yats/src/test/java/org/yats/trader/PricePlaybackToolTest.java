@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 
 public class PricePlaybackToolTest {
 
-    @Test
+    @Test(groups = { "internet" })
     public void canReplayPricesInSameOrderAsTheyArrive()
     {
         playback.createOrderedPriceList();
@@ -40,7 +40,7 @@ public class PricePlaybackToolTest {
         assert(!playback.hasMorePriceData());
     }
 
-    @Test
+    @Test(groups = { "internet" })
     public void canReplayPricesWithDifferentSpeedFactors()
     {
         checkArrivalDelaysWithSpeedFactor(1);
@@ -78,7 +78,7 @@ public class PricePlaybackToolTest {
         assert (elapsedTimeD3.isShorterThan(expectedArrivalDurationD3.plus(acceptableDelayMillis)));
     }
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp(Method method) {
         String testDir = method.getName();
         FileTool.deleteDirectory(testDir);
@@ -107,7 +107,7 @@ public class PricePlaybackToolTest {
         playback = new PricePlaybackTool(prop);
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown(Method method) {
         FileTool.deleteDirectory(method.getName());
     }

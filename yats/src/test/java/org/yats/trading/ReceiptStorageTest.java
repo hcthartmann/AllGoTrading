@@ -83,7 +83,7 @@ public class ReceiptStorageTest {
     }
 
 
-    @BeforeMethod(groups = { "inMemory" })
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         storage = new ReceiptStorageMem();
         processReceipts();
