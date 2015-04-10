@@ -1,7 +1,7 @@
 package org.yats.trader.examples.server;
 
 import org.yats.connectivity.xchange.BtcchinaPricePoll;
-import org.yats.connectivity.xchange.XPricefeedServer;
+import org.yats.connectivity.xchange.XPriceFeedServer;
 
 /**
  * Created
@@ -15,7 +15,7 @@ public class BtcchinaPricefeedMain
 
         String pricePollClassName = BtcchinaPricePoll.class.getSimpleName();
 
-        XPricefeedServer q = new XPricefeedServer.Factory().createXPricefeedServerFromProperties(pricePollClassName);
+        XPriceFeedServer q = new XPriceFeedServer.Factory().createXPricefeedServerFromProperties(pricePollClassName);
 
         try {
             q.go();

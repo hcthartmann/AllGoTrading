@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 00:34
  */
 
-public class XPricefeed implements IProvidePriceFeed, Runnable {
+public class XPriceFeed implements IProvidePriceFeed, Runnable {
 
 
     public void start() {
@@ -62,7 +62,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
         running=false;
     }
 
-    public XPricefeed(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
+    public XPriceFeed(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
         subscribableProductIds = _subscribableProductIds;
         priceDataProvider=_priceDataProvider;
         subscriptionList = new ConcurrentHashMap<String, IConsumePriceData>();
@@ -91,6 +91,6 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     private IProvidePriceData priceDataProvider;
     private List<String> subscribableProductIds;
 
-    final private Logger log = LoggerFactory.getLogger(XPricefeed.class);
+    final private Logger log = LoggerFactory.getLogger(XPriceFeed.class);
 
 }
