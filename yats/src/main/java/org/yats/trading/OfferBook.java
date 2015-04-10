@@ -19,6 +19,10 @@ public class OfferBook {
         return getDepth(_side)==0;
     }
 
+    public boolean isAnyBookSideEmpty() {
+        return isBookSideEmpty(BookSide.BID) || isBookSideEmpty(BookSide.ASK);
+    }
+
     public BookRow getRow(BookSide _side, int _row) {
         return bookSides[_side.toIndex()].getRow(_row);
     }
