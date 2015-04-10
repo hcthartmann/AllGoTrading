@@ -13,13 +13,20 @@ public class LastPriceServerMain {
         final String className = LastPriceServerMain.class.getSimpleName();
         String configFilename = Tool.getPersonalConfigFilename("config",className);
         PropertiesReader prop = PropertiesReader.createFromConfigFile(configFilename);
-        LastPriceServer c = new LastPriceServer(prop);
-        try {
-            c.go();
-        } catch (RuntimeException r)
-        {
-            r.printStackTrace();
-        }
+//        LastPriceServer c = new LastPriceServer(prop);
+        LastPriceServer c = new LastPriceServer.Factory().createFromProperties(prop);
+
+        c.start();
+//        instead of go() call
+//        start()
+//        after refactoring to Factory
+//
+//        try {
+//            c.go();
+//        } catch (RuntimeException r)
+//        {
+//            r.printStackTrace();
+//        }
 
         System.out.println("\n===");
         System.out.println("Initialization done.");

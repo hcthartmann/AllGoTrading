@@ -79,6 +79,16 @@ public class PriceData
         return book.toStringCSV();
     }
 
+    public boolean isBefore(PriceData other)
+    {
+        return timestamp.isBefore(other.getTimestamp());
+    }
+
+    public boolean isAfter(PriceData other)
+    {
+        return timestamp.isAfter(other.getTimestamp());
+    }
+
     public PriceData(DateTime timestamp, String productId, Decimal bid, Decimal ask, Decimal last, Decimal bidSize, Decimal askSize, Decimal lastSize) {
         this.timestamp = timestamp;
         this.productId = productId;

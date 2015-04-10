@@ -14,11 +14,30 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
 
-    final Logger log = LoggerFactory.getLogger(LastPriceServer.class);
+
+
+    public void start() {
+        readCacheFromDisk();
+        strategyToBusConnection.setPriceDataConsumer(this);
+        receiverSubscription.setObserver(this);
+        receiverSubscription.start();
+    }
+
+    public void close() {
+        writeCacheToDisk();
+        strategyToBusConnection.close();
+        receiverSubscription.close();
+    }
 
     @Override
-    public void onPriceData(PriceData priceData) {
-        cache.put(priceData.getProductId(), priceData);
+    public void onPriceData(PriceData _priceData)
+    {
+        if(isNewerThanInCache(_priceData))
+            cache.put(_priceData.getProductId(), _priceData);
+    }
+
+    public PriceData getLatest(String _pid) {
+        return cache.get(_pid);
     }
 
     @Override
@@ -37,25 +56,13 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
         }
     }
 
-    public void go() {
-    }
-
-    public void close() {
-        writeCacheToDisk();
-        strategyToBusConnection.close();
-        receiverSubscription.close();
-    }
-
-
-
     public LastPriceServer(IProvideProperties _prop)
     {
         shutdown=false;
-        prop = _prop;
-        cacheFilename = prop.get("cacheFilename");
+        cacheFilename = _prop.get("cacheFilename");
         cache = new ConcurrentHashMap<String, PriceData>();
         readCacheFromDisk();
-        Config config =  Config.fromProperties(prop);
+        Config config =  Config.fromProperties(_prop);
         strategyToBusConnection = new StrategyToBusConnection(_prop);
         strategyToBusConnection.setPriceDataConsumer(this);
 
@@ -67,6 +74,36 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
         receiverSubscription.start();
         senderPriceDataMsg = new Sender<PriceDataMsg>(config.getExchangePriceData(), config.getServerIP());
     }
+
+    public static class Factory {
+        public LastPriceServer createFromProperties(IProvideProperties _prop) {
+            Config config =  Config.fromProperties(_prop);
+            StrategyToBusConnection strategyToBusConnection = new StrategyToBusConnection(_prop);
+            BufferingReceiver<SubscriptionMsg> receiverSubscription
+                    = new BufferingReceiver<SubscriptionMsg>(SubscriptionMsg.class,
+                    config.getExchangeSubscription(),
+                    config.getTopicSubscriptions(),
+                    config.getServerIP());
+            Sender<PriceDataMsg> senderPriceDataMsg = new Sender<PriceDataMsg>(config.getExchangePriceData(), config.getServerIP());
+
+            return new LastPriceServer(_prop.get("cacheFilename"), strategyToBusConnection,
+                    receiverSubscription,senderPriceDataMsg);
+        }
+    }
+
+
+    public LastPriceServer(String _cacheFilename, StrategyToBusConnection _connection,
+                           BufferingReceiver<SubscriptionMsg> _subscriptionReceiver,
+                           Sender<PriceDataMsg> _senderPriceDataMsg)
+    {
+        shutdown=false;
+        cacheFilename = _cacheFilename;
+        cache = new ConcurrentHashMap<String, PriceData>();
+        strategyToBusConnection = _connection;
+        receiverSubscription = _subscriptionReceiver;
+        senderPriceDataMsg = _senderPriceDataMsg;
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -99,6 +136,15 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
         log.info("Cache read from disk with "+cache.size()+" items.");
     }
 
+    private boolean isNewerThanInCache(PriceData priceData)
+    {
+        String productId = priceData.getProductId();
+        if(!cache.containsKey(productId)) return true;
+        PriceData oldData = cache.get(productId);
+        return priceData.isAfter(oldData);
+    }
+
+
     private final String cacheFilename;
     private Sender<PriceDataMsg> senderPriceDataMsg;
     private ConcurrentHashMap<String, PriceData> cache;
@@ -106,5 +152,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     private final boolean shutdown;
     private final StrategyToBusConnection strategyToBusConnection;
 
-    private final IProvideProperties prop;
+    private final Logger log = LoggerFactory.getLogger(LastPriceServer.class);
+
+//    private final IProvideProperties prop;
 }

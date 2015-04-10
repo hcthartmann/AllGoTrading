@@ -111,7 +111,7 @@ public class PriceFeed implements IProvidePriceFeed, Runnable {
                 if(line.contains("instrument")) {
                 //ignore heartbeats
 //                if (tick.containsKey("instrument")) {
-                    System.out.println("-------");
+//                    System.out.println("-------");
 
                     JSONObject values = (JSONObject)tick.get("tick");
                     String instrument = values.get("instrument").toString();
@@ -120,10 +120,10 @@ public class PriceFeed implements IProvidePriceFeed, Runnable {
                     double ask = Double.parseDouble(values.get("ask").toString());
                     Decimal last = Decimal.fromDouble((bid+ask)/2);
 
-                    System.out.println(instrument);
-                    System.out.println(time);
-                    System.out.println(bid);
-                    System.out.println(ask);
+//                    System.out.println(instrument);
+//                    System.out.println(time);
+//                    System.out.println(bid);
+//                    System.out.println(ask);
 
                     String productId = mapSymbolToPid.get(instrument);
                     PriceData data = new PriceData(Tool.getUTCTimestamp(),

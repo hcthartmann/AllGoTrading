@@ -34,6 +34,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         if (cellId.compareTo(firstColumnExcelArray) == 0) {
             String firstColumnString = ddeLink.request(firstColumnExcelArray);
             parseFirstColumn(firstColumnString);
+            listenerAxisChange.onFirstColumnChange(rowIdList);
 //            updateFirstColumn(data);
         } else if (cellId.compareTo(firstRowExcelArray) == 0) {
             String firstRowString = ddeLink.request(firstRowExcelArray);
@@ -269,6 +270,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
 
     private void pokeRowForRowId(String rowId) {
         String s = getRowDataString(rowId);
+//        log.debug("poking "+rowId+" with "+s);
         int row = getRowIndex(rowId);
         pokeRow(row, columnIdList.size() + 1, s);
     }
