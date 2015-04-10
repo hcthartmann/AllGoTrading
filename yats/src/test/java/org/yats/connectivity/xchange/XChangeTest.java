@@ -37,7 +37,7 @@ public class XChangeTest {
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
-        String bfxPricePollName = BitfinexPricePoll.class.getSimpleName();
+        String bfxPricePollName = BitfinexPricepoll.class.getSimpleName();
         String bfxPropName = Tool.getPersonalSubdirConfigFilename("config", "xchanges", bfxPricePollName);
         PropertiesReader bfxProp = PropertiesReader.createFromConfigFile(bfxPropName);
         bfxFeed = XPricefeedServer.Factory.instantiatePricePollFactory(bfxPricePollName).createFromProperties(bfxProp);
