@@ -40,34 +40,58 @@ public class ExcelConnection implements
 
     private void updateKnownProducts(Collection<String> firstColumn) {
         for(String pid : firstColumn) {
-            if(!knownProducts.containsKey(pid)) {
-                if(productList.containsProductWith(pid)) {
-                    subscribe(pid);
-                    knownProducts.put(pid,pid);
-                }
-            }
+            if(knownProducts.containsKey(pid)) continue;
+            if(!productList.containsProductWith(pid)) continue;
+            subscribe(pid);
+            priceUpdateTimes.put(pid, DateTime.now());
+            knownProducts.put(pid,pid);
         }
     }
 
     @Override
     public void onBulkPriceData(Collection<? extends PriceData> dataList) {
-        DateTime startCopy = DateTime.now();
         List<MatrixItem> all = new ArrayList<MatrixItem>();
         for(PriceData data : dataList) {
             String pid = data.getProductId();
+            setPriceUpdateTimeIfNewer(pid, data.getTimestamp());
             MatrixItem timestamp = new MatrixItem(pid, "timestamp", data.getTimestamp().toString());
             all.add(timestamp);
             all.addAll(getBookSideAsMatrixItems(data, BookSide.BID));
             all.addAll(getBookSideAsMatrixItems(data, BookSide.ASK));
         }
-        Duration dCopy = new Duration(startCopy, DateTime.now());
+//        Duration dCopy = new Duration(now, DateTime.now());
 //        log.info("bulkCopy: " + dCopy.getMillis());
 
 //        DateTime startSheet = DateTime.now();
         sheetAccessPrices.updateMatrix(all);
 //        Duration d = new Duration(startSheet, DateTime.now());
 //        log.info("sheetAccessPrices: " + d.getMillis());
+        renewSubscriptionForOldData();
 
+    }
+
+    private void setPriceUpdateTimeIfNewer(String pid, DateTime timestamp)
+    {
+        if(priceUpdateTimes.containsKey(pid)) {
+            if(timestamp.isBefore(priceUpdateTimes.get(pid))) return;
+        }
+        priceUpdateTimes.put(pid, timestamp);
+    }
+
+    private void renewSubscriptionForOldData()
+    {
+        if(resubscribeMillis==0) return;
+        Enumeration<String> pidList = priceUpdateTimes.keys();
+        while(pidList.hasMoreElements())
+        {
+            String pid = pidList.nextElement();
+            DateTime lastUpdateTime = priceUpdateTimes.get(pid);
+            DateTime now = DateTime.now();
+            Duration diff = new Duration(lastUpdateTime, now);
+            if(diff.isShorterThan(Duration.millis(resubscribeMillis))) continue;
+            subscribe(pid);
+            priceUpdateTimes.put(pid, now);
+        }
     }
 
     @Override
@@ -111,7 +135,10 @@ public class ExcelConnection implements
     }
 
     public void subscribe(String pid) {
-        strategyToBusConnection.subscribeBulk(pid, this);
+        if(productList.containsProductWith(pid))
+        {
+            strategyToBusConnection.subscribeBulk(pid, this);
+        }
     }
 
     public void startDDE() {
@@ -179,10 +206,11 @@ public class ExcelConnection implements
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    private void subscribeAllProductIds(Collection<String> pidList) {
-        for (String pid : pidList) {
-            if(productList.containsProductWith(pid))
-                subscribe(pid);
+    private void subscribeAllProductIds(Collection<String> pidList)
+    {
+        for (String pid : pidList)
+        {
+            subscribe(pid);
         }
     }
 
@@ -192,9 +220,9 @@ public class ExcelConnection implements
                            IProvideDDEConversation _reportConversation,
                            IProvideDDEConversation _positionConversation,
                            IProvideDDEConversation _settingsConversation
-
-
-    ) {
+    )
+    {
+        priceUpdateTimes = new ConcurrentHashMap<String, DateTime>();
         prop = _prop;
         productList=_products;
         if (!Tool.isWindows()) System.out.println("This is not Windows! DDELink will not work!");
@@ -212,6 +240,8 @@ public class ExcelConnection implements
 
         strategyToBusConnection = new StrategyToBusConnection(_prop);
 
+        resubscribeMillis = prop.getAsDecimal("resubscribeMillis").toInt();
+        log.debug("resubscribeMillis="+resubscribeMillis);
     }
 
 
@@ -242,6 +272,8 @@ public class ExcelConnection implements
     private IProvideProduct productList;
     private ConcurrentHashMap<String, MatrixItem> reportsMap;
     private ConcurrentHashMap<String, String> knownProducts;
+    private ConcurrentHashMap<String, DateTime> priceUpdateTimes;
+    private long resubscribeMillis;
 
 } // class
 
