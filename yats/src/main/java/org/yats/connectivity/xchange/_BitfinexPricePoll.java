@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 12:56
  */
 
-public class BitfinexPricepoll implements IProvidePriceData {
+public class BitfinexPricePoll implements IProvidePriceData {
 
     @Override
     public PriceData getPriceData(String productId) {
@@ -55,12 +55,12 @@ public class BitfinexPricepoll implements IProvidePriceData {
         @Override
         public IProvidePriceData createFromProperties(PropertiesReader prop) {
             Exchange bfxExchange = ExchangeFactory.INSTANCE.createExchange(BitfinexExchange.class.getName());
-            BitfinexPricepoll bfxFeed = new BitfinexPricepoll(bfxExchange, prop.toMap());
+            BitfinexPricePoll bfxFeed = new BitfinexPricePoll(bfxExchange, prop.toMap());
             return bfxFeed;
         }
     }
 
-    public BitfinexPricepoll(Exchange _exchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
+    public BitfinexPricePoll(Exchange _exchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
         exchange = _exchange;
         mapPidToExchangeSymbol = _mapPidToExchangeSymbol;
     }
