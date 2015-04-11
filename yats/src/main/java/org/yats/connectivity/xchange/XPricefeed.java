@@ -51,7 +51,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
             try {
                 Thread.yield();
                 receive();
-                Tool.sleepFor(5000);
+                sleepABitIfNotShuttingDown(5000);
             }
             catch(IOException e) {
                 log.error("network error");
@@ -61,10 +61,20 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
         running=false;
     }
 
+    private void sleepABitIfNotShuttingDown(int _sleepTimeMillis) {
+        int timeSliceMillis = 200;
+        int sleepSlices = _sleepTimeMillis / timeSliceMillis;
+        for(int i=0; i<sleepSlices; i++) {
+            if(shutdown) return;
+            Tool.sleepFor(timeSliceMillis);
+        }
+    }
+
     public XPricefeed(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
         subscribableProductIds = _subscribableProductIds;
         priceDataProvider=_priceDataProvider;
         subscriptionList = new Mapping<String, IConsumePriceData>();
+        cache = new Mapping<String, PriceData>();
         thread = new Thread(this);
         shutdown = false;
         running=true;
@@ -76,10 +86,25 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     {
         for(String pid : subscriptionList.keyList())
         {
-            IConsumePriceData priceDataConsumer = subscriptionList.get(pid);
-            PriceData data = priceDataProvider.getPriceData(pid);
-            priceDataConsumer.onPriceData(data);
+            PriceData newData = priceDataProvider.getPriceData(pid);
+            sendIfChanged(newData);
         }
+    }
+
+    private void sendIfChanged(PriceData newData)
+    {
+        String pid = newData.getProductId();
+        if(cache.containsKey(pid))   {
+            PriceData oldData = cache.get(pid);
+            if(oldData.isSameBestRowsAs(newData, 5)) {
+                return;
+            }
+        }
+
+        cache.put(pid, newData);
+        IConsumePriceData priceDataConsumer = subscriptionList.get(pid);
+        priceDataConsumer.onPriceData(newData);
+
     }
 
     private boolean running;
@@ -88,7 +113,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     private Mapping<String, IConsumePriceData> subscriptionList;
     private IProvidePriceData priceDataProvider;
     private List<String> subscribableProductIds;
-
+    private Mapping<String, PriceData> cache;
     final private Logger log = LoggerFactory.getLogger(XPricefeed.class);
 
 }

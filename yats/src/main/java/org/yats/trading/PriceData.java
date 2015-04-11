@@ -89,6 +89,21 @@ public class PriceData
         return timestamp.isAfter(other.getTimestamp());
     }
 
+    public boolean isSameBestBidOfferLastAs(PriceData other)
+    {
+        return bid.isEqualTo(other.bid) &&
+                ask.isEqualTo(other.ask) &&
+                last.isEqualTo(other.last) &&
+                bidSize.isEqualTo(other.bidSize) &&
+                askSize.isEqualTo(other.askSize) &&
+                lastSize.isEqualTo(other.lastSize);
+    }
+
+    public boolean isSameBestRowsAs(PriceData other, int numberOfBestRowsToCompare)
+    {
+        return book.isSameBestRowsAs(other.book, numberOfBestRowsToCompare);
+    }
+
     public PriceData(DateTime timestamp, String productId, Decimal bid, Decimal ask, Decimal last, Decimal bidSize, Decimal askSize, Decimal lastSize) {
         this.timestamp = timestamp;
         this.productId = productId;

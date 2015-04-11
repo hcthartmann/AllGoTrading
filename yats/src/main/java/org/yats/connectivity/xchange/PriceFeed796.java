@@ -1,4 +1,4 @@
-package org.yats.connectivity.x796;
+package org.yats.connectivity.xchange;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.yats.common.Decimal;
 import org.yats.common.Mapping;
 import org.yats.connectivity.ConnectivityExceptions;
+import org.yats.connectivity.xchange.ApiRequest;
 import org.yats.trading.*;
 
 import java.io.IOException;

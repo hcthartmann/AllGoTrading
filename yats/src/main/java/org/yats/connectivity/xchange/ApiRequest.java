@@ -1,4 +1,4 @@
-package org.yats.connectivity.x796;
+package org.yats.connectivity.xchange;
 
 
 import org.apache.commons.codec.binary.Base64;

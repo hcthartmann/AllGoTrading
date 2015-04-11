@@ -44,6 +44,16 @@ public class OfferBookSide { // implements List<BookRow> {
         bookHalf.add(row);
     }
 
+    public boolean isSameBestRowsAs(OfferBookSide other, int numberOfBestRowsToCompare)
+    {
+        if(bookHalf.size() != other.bookHalf.size()) return false;
+        int maxRows = Math.min(bookHalf.size(), numberOfBestRowsToCompare);
+        for(int i=0; i<maxRows; i++) {
+            if(!bookHalf.get(i).isSameAs(other.getRow(i))) return false;
+        }
+        return true;
+    }
+
     public OfferBookSide(BookSide _side) {
         side =_side;
         bookHalf = new Vector<BookRow>();

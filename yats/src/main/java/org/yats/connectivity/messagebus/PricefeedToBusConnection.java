@@ -28,6 +28,7 @@ public class PricefeedToBusConnection implements IConsumePriceData, IAmCalledBac
     public void shutdown()
     {
         shuttingDown=true;
+        receiverSubscription.close();
     }
 
     @Override

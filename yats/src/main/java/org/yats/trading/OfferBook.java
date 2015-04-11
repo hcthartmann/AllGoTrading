@@ -79,6 +79,12 @@ public class OfferBook {
         bookSides[1].add(r);
     }
 
+    public boolean isSameBestRowsAs(OfferBook other, int numberOfBestRowsToCompare)
+    {
+        if(!bookSides[0].isSameBestRowsAs(other.bookSides[0], numberOfBestRowsToCompare)) return false;
+        return bookSides[1].isSameBestRowsAs(other.bookSides[1], numberOfBestRowsToCompare);
+    }
+
 
     public OfferBook(OfferBookSide bidSide, OfferBookSide askSide) {
         bookSides = new OfferBookSide[2];

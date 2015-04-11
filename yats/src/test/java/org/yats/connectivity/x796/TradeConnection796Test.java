@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import org.yats.common.Decimal;
 import org.yats.common.PropertiesReader;
 import org.yats.common.Tool;
+import org.yats.connectivity.xchange.TradeConnection796;
 
 import java.io.IOException;
 import java.util.Map;

@@ -6,16 +6,18 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.yats.common.Decimal;
 import org.yats.common.Mapping;
+import org.yats.connectivity.xchange.X796PricePoll;
 import org.yats.trading.BookSide;
 import org.yats.trading.OfferBook;
 
 import java.io.IOException;
 
-public class PriceFeed796Test {
+public class X796PricePollTest
+{
 
     @Test(groups = { "internet" })
     public void canGetDepth() throws IOException, JSONException {
-        OfferBook book = priceFeed.getDepth();
+        OfferBook book = poll.getDepth();
         Assert.assertFalse(book == null);
         Assert.assertFalse(book.isBookSideEmpty(BookSide.BID));
         Assert.assertFalse(book.isBookSideEmpty(BookSide.ASK));
@@ -46,10 +48,12 @@ public class PriceFeed796Test {
     @BeforeMethod(alwaysRun = true)
     public void setUp()
     {
-        priceFeed = new PriceFeed796(new Mapping<String, String>());
+        Mapping<String,String> pidMap = new Mapping<String, String>();
+        pidMap.put("X796_XBTUSD", "X796_XBTUSD");
+        poll = new X796PricePoll(pidMap);
     }
 
     /////////////////////////////////////////////////////////////////////
 
-    private PriceFeed796 priceFeed;
+    private X796PricePoll poll;
 }

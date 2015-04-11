@@ -1,10 +1,11 @@
-package org.yats.connectivity.x796;
+package org.yats.connectivity.xchange;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.yats.common.Decimal;
 import org.yats.common.UniqueId;
 import org.yats.connectivity.ConnectivityExceptions;
+import org.yats.connectivity.xchange.ApiRequest;
 import org.yats.trading.BookSide;
 import org.yats.trading.OrderCancel;
 import org.yats.trading.OrderNew;
