@@ -2,13 +2,14 @@ package org.yats.connectivity.matching;
 
 import org.yats.common.CommonExceptions;
 import org.yats.common.Decimal;
+import org.yats.common.Map;
 import org.yats.common.UniqueId;
 import org.yats.trading.*;
 
 import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class LimitOrderBookSide implements IConsumeReceipt {
 
@@ -42,7 +43,7 @@ public class LimitOrderBookSide implements IConsumeReceipt {
         if(isOrderIdInBook(idString)) {
             PriceLevel priceLevel = bookByOrderId.get(idString);
             priceLevel.remove(idString);
-            bookByOrderId.remove(idString);
+            removeOrderFromBook(idString);
             removeEmptyFrontRows();
         }
     }
@@ -122,7 +123,7 @@ public class LimitOrderBookSide implements IConsumeReceipt {
         book = _side==BookSide.BID
                 ? new TreeMap<Decimal, PriceLevel>(Collections.reverseOrder())
                 : new TreeMap<Decimal, PriceLevel>();
-        bookByOrderId = new ConcurrentHashMap<String, PriceLevel>();
+        bookByOrderId = new Map<String, PriceLevel>();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +144,7 @@ public class LimitOrderBookSide implements IConsumeReceipt {
     private IConsumeReceipt receiptConsumer;
 
     private SortedMap<Decimal,PriceLevel> book;
-    private ConcurrentHashMap<String, PriceLevel> bookByOrderId;
+    private Map<String, PriceLevel> bookByOrderId;
     private boolean takerReceiptSent;
 
 

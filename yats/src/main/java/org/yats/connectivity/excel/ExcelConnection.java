@@ -5,13 +5,16 @@ import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.IProvideProperties;
+import org.yats.common.Map;
 import org.yats.common.Tool;
 import org.yats.connectivity.messagebus.StrategyToBusConnection;
 import org.yats.trading.*;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 public class ExcelConnection implements
         IConsumeBulkPriceData, IConsumeReceipt, IConsumeReports, IConsumePositionSnapshot, IConsumeAxisChanges,
@@ -81,10 +84,8 @@ public class ExcelConnection implements
     private void renewSubscriptionForOldData()
     {
         if(resubscribeMillis==0) return;
-        Enumeration<String> pidList = priceUpdateTimes.keys();
-        while(pidList.hasMoreElements())
+        for(String pid : priceUpdateTimes.keyList())
         {
-            String pid = pidList.nextElement();
             DateTime lastUpdateTime = priceUpdateTimes.get(pid);
             DateTime now = DateTime.now();
             Duration diff = new Duration(lastUpdateTime, now);
@@ -222,11 +223,11 @@ public class ExcelConnection implements
                            IProvideDDEConversation _settingsConversation
     )
     {
-        priceUpdateTimes = new ConcurrentHashMap<String, DateTime>();
+        priceUpdateTimes = new Map<String, DateTime>();
         prop = _prop;
         productList=_products;
         if (!Tool.isWindows()) System.out.println("This is not Windows! DDELink will not work!");
-        reportsMap = new ConcurrentHashMap<String, MatrixItem>();
+        reportsMap = new Map<String, MatrixItem>();
         sheetAccessPositions = new SheetAccess(_positionConversation);
         sheetAccessReports = new SheetAccess(_reportConversation);
         sheetAccessReports.setSnapShotMode(false);
@@ -234,7 +235,7 @@ public class ExcelConnection implements
         sheetAccessPrices = new SheetAccess(_priceConversation);
         sheetAccessPrices.setNaString("");
         sheetAccessPrices.setFirstRowListener(this);
-        knownProducts = new ConcurrentHashMap<String, String>();
+        knownProducts = new Map<String, String>();
         sheetAccessSettings =new SheetAccess(_settingsConversation);
         sheetAccessSettings.setSettingsSender(this);
 
@@ -270,9 +271,9 @@ public class ExcelConnection implements
     private StrategyToBusConnection strategyToBusConnection;
     private IProvideProperties prop;
     private IProvideProduct productList;
-    private ConcurrentHashMap<String, MatrixItem> reportsMap;
-    private ConcurrentHashMap<String, String> knownProducts;
-    private ConcurrentHashMap<String, DateTime> priceUpdateTimes;
+    private Map<String, MatrixItem> reportsMap;
+    private Map<String, String> knownProducts;
+    private Map<String, DateTime> priceUpdateTimes;
     private long resubscribeMillis;
 
 } // class

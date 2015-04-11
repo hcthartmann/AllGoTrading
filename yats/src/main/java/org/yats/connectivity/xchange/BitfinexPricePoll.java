@@ -11,12 +11,13 @@ import com.xeiam.xchange.service.polling.marketdata.PollingMarketDataService;
 import org.joda.time.DateTime;
 import org.yats.common.Decimal;
 import org.yats.common.IProvidePriceDataProvider;
+import org.yats.common.Map;
 import org.yats.common.PropertiesReader;
 import org.yats.connectivity.ConnectivityExceptions;
 import org.yats.trading.*;
 
 import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Created
@@ -60,7 +61,7 @@ public class BitfinexPricePoll implements IProvidePriceData {
         }
     }
 
-    public BitfinexPricePoll(Exchange _exchange, ConcurrentHashMap<String, String> _mapPidToExchangeSymbol) {
+    public BitfinexPricePoll(Exchange _exchange, Map<String, String> _mapPidToExchangeSymbol) {
         exchange = _exchange;
         mapPidToExchangeSymbol = _mapPidToExchangeSymbol;
     }
@@ -83,7 +84,7 @@ public class BitfinexPricePoll implements IProvidePriceData {
 
 
     private Exchange exchange;
-    private ConcurrentHashMap<String,String> mapPidToExchangeSymbol;
+    private Map<String,String> mapPidToExchangeSymbol;
 
 
 }

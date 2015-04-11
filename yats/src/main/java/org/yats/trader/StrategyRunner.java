@@ -7,8 +7,10 @@ import org.yats.common.*;
 import org.yats.trading.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +42,7 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     private void addConsumerForProductId(String productId, IConsumePriceData consumer)
     {
-        ConcurrentHashMap<String, IConsumePriceData> consumers = getConsumersOfProductId(productId);
+        Map<String, IConsumePriceData> consumers = getConsumersOfProductId(productId);
         consumers.put(consumer.getConsumerId().toString(), consumer);
         mapProductIdToConsumers.put(productId, consumers);
     }
@@ -109,7 +111,7 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
         receiptConsumers.remove(s);
         settingsConsumers.remove(s);
         strategyList.remove(strategyName);
-        for(String pid : mapProductIdToConsumers.keySet()) mapProductIdToConsumers.remove(pid, s);
+        for(String pid : mapProductIdToConsumers.keyList()) mapProductIdToConsumers.remove(pid);
         log.info("done. removed strategy "+strategyName);
         IProvideProperties p = new PropertiesReader();
         p.set(StrategyBase.SETTING_STRATEGYNAME, strategyName);
@@ -199,10 +201,11 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
                 }
 
 //                log.info("prices...");
-                PriceData newData = priceDataMap.remove(updatedProductId);
-                if(newData!=null) {
+                if(priceDataMap.containsKey(updatedProductId))
+                {
+                    PriceData newData = priceDataMap.remove(updatedProductId);
                     rateConverter.onPriceData(newData);
-                    ConcurrentHashMap<String, IConsumePriceData> priceDataConsumers = getConsumersOfProductId(newData.getProductId());
+                    Map<String, IConsumePriceData> priceDataConsumers = getConsumersOfProductId(newData.getProductId());
                     for(IConsumePriceData md : priceDataConsumers.values()) {
                         md.onPriceData(newData);
                     }
@@ -244,15 +247,15 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     public StrategyRunner() {
 
-        strategyList = new ConcurrentHashMap<String, StrategyBase>();
+        strategyList = new Map<String, StrategyBase>();
         consumerId = UniqueId.create();
         priceFeed = new PriceFeedDummy();
         orderSender = new OrderSenderDummy();
         callbackList =new ArrayList<TimedCallback>();
-        orderMap = new ConcurrentHashMap<String, OrderNew>();
-        priceDataMap = new ConcurrentHashMap<String, PriceData>();
-//        subscribedProducts = new ConcurrentHashMap<String, Product>();
-        mapProductIdToConsumers = new ConcurrentHashMap<String, ConcurrentHashMap<String, IConsumePriceData>>();
+        orderMap = new Map<String, OrderNew>();
+        priceDataMap = new Map<String, PriceData>();
+//        subscribedProducts = new Map<String, Product>();
+        mapProductIdToConsumers = new Map<String, Map<String, IConsumePriceData>>();
         updatedProductQueue = new WaitingLinkedBlockingQueue<String>();
         receiptQueue = new LinkedBlockingQueue<Receipt>();
         settingsQueue = new LinkedBlockingQueue<IProvideProperties>();
@@ -270,10 +273,10 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private ConcurrentHashMap<String, IConsumePriceData> getConsumersOfProductId(String productId) {
+    private Map<String, IConsumePriceData> getConsumersOfProductId(String productId) {
         return mapProductIdToConsumers.containsKey(productId)
                 ? mapProductIdToConsumers.get(productId)
-                : new ConcurrentHashMap<String, IConsumePriceData>();
+                : new Map<String, IConsumePriceData>();
     }
 
 
@@ -327,9 +330,9 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     private Thread strategyThread;
     private IProvidePriceFeed priceFeed;
-    private ConcurrentHashMap<String, ConcurrentHashMap<String, IConsumePriceData>> mapProductIdToConsumers;
-    private ConcurrentHashMap<String, PriceData> priceDataMap;
-    private ConcurrentHashMap<String, OrderNew> orderMap;
+    private Map<String, Map<String, IConsumePriceData>> mapProductIdToConsumers;
+    private Map<String, PriceData> priceDataMap;
+    private Map<String, OrderNew> orderMap;
     private LinkedBlockingQueue<Receipt> receiptQueue;
     private LinkedBlockingQueue<IProvideProperties> settingsQueue;
     private WaitingLinkedBlockingQueue<String> updatedProductQueue;
@@ -341,7 +344,7 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
     private boolean shutdown;
     private UniqueId consumerId;
     private RateConverter rateConverter;
-    private ConcurrentHashMap<String, StrategyBase> strategyList;
+    private Map<String, StrategyBase> strategyList;
     private ArrayList<TimedCallback> callbackList;
     private StrategyFactory factory;
 } // class

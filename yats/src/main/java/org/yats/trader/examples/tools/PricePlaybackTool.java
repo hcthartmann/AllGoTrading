@@ -5,6 +5,7 @@ import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.IProvideProperties;
+import org.yats.common.Map;
 import org.yats.common.PropertiesReader;
 import org.yats.common.Tool;
 import org.yats.messagebus.Config;
@@ -13,8 +14,10 @@ import org.yats.messagebus.messages.PriceDataMsg;
 import org.yats.trading.PriceData;
 import org.yats.trading.ReadPriceJSON;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class PricePlaybackTool implements Runnable {
 
@@ -123,8 +126,8 @@ public class PricePlaybackTool implements Runnable {
         String[] parts = pidListString.split(",");
         pidList = Arrays.asList(parts);
 
-        readerMap = new ConcurrentHashMap<String, ReadPriceJSON>();
-        productPriceMap = new ConcurrentHashMap<String, PriceData>();
+        readerMap = new Map<String, ReadPriceJSON>();
+        productPriceMap = new Map<String, PriceData>();
 
         for(String pid : pidList) {
             ReadPriceJSON csvReader = new ReadPriceJSON(baseLocation,pid);
@@ -178,10 +181,10 @@ public class PricePlaybackTool implements Runnable {
 
     private Sender<PriceDataMsg> senderPriceDataMsg;
     private boolean shutdownThread,publishedOnce;
-    private ConcurrentHashMap<String,PriceData> productPriceMap;
+    private Map<String,PriceData> productPriceMap;
     private Thread thread;
     private List<String> pidList;
-    private ConcurrentHashMap<String,ReadPriceJSON> readerMap;
+    private Map<String,ReadPriceJSON> readerMap;
     private double speedFactor;
     private String baseLocation;
     private int productPublishedCount;

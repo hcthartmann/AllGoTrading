@@ -1,12 +1,13 @@
 package org.yats.connectivity;
 
 import org.yats.common.FileTool;
+import org.yats.common.Map;
 import org.yats.messagebus.Deserializer;
 import org.yats.messagebus.Serializer;
 import org.yats.messagebus.messages.ReceiptMsg;
 import org.yats.trading.Receipt;
 
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class Id2ReceiptMap {
 
@@ -166,12 +167,12 @@ public class Id2ReceiptMap {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     private void init() {
-        externalId2Receipt =new ConcurrentHashMap<String, ReceiptMsg>();
-        orderId2ExternalIdMap =new ConcurrentHashMap<String, String>();
+        externalId2Receipt =new Map<String, ReceiptMsg>();
+        orderId2ExternalIdMap =new Map<String, String>();
     }
 
-    private ConcurrentHashMap<String, ReceiptMsg> externalId2Receipt;
-    private ConcurrentHashMap<String, String> orderId2ExternalIdMap;
+    private Map<String, ReceiptMsg> externalId2Receipt;
+    private Map<String, String> orderId2ExternalIdMap;
 
 
 } // class

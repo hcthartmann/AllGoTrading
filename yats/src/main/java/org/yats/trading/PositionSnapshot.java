@@ -2,10 +2,11 @@ package org.yats.trading;
 
 import org.joda.time.DateTime;
 import org.yats.common.Decimal;
+import org.yats.common.Map;
 import org.yats.common.Tool;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class PositionSnapshot implements IProvidePosition {
 
@@ -157,7 +158,7 @@ public class PositionSnapshot implements IProvidePosition {
     }
 
     public PositionSnapshot() {
-        positionMap = new ConcurrentHashMap<String, AccountPosition>();
+        positionMap = new Map<String, AccountPosition>();
         rateConverter = new RateConverter(new ProductList());
         updateLastChange();
     }
@@ -169,7 +170,7 @@ public class PositionSnapshot implements IProvidePosition {
     }
 
     private DateTime lastChange;
-    private ConcurrentHashMap<String, AccountPosition> positionMap;
+    private Map<String, AccountPosition> positionMap;
     private IConvertRate rateConverter;
 
 } // class

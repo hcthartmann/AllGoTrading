@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.IAmCalledBack;
 import org.yats.common.IProvideProperties;
+import org.yats.common.Map;
 import org.yats.common.UniqueId;
 import org.yats.messagebus.BufferingReceiver;
 import org.yats.messagebus.Config;
@@ -17,7 +18,7 @@ import org.yats.trading.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkPriceFeed, ISendOrder, IAmCalledBack, ISendSettings, ISendReports {
@@ -119,8 +120,8 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
         shuttingDown=false;
         initDone=false;
 
-        priceDataMap = new ConcurrentHashMap<String, PriceDataMsg>();
-        reportsMap = new ConcurrentHashMap<String, IProvideProperties>();
+        priceDataMap = new Map<String, PriceDataMsg>();
+        reportsMap = new Map<String, IProvideProperties>();
         orderNewQueue = new LinkedBlockingQueue<OrderNew>();
         orderCancelQueue = new LinkedBlockingQueue<OrderCancel>();
         subscriptionQueue = new LinkedBlockingQueue<SubscriptionMsg>();
@@ -275,8 +276,8 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
     private IConsumePositionSnapshot positionSnapshotConsumer;
 
     private BufferingReceiver<PriceDataMsg> receiverPriceData;
-    private ConcurrentHashMap<String, PriceDataMsg> priceDataMap;
-    private ConcurrentHashMap<String, IProvideProperties> reportsMap;
+    private Map<String, PriceDataMsg> priceDataMap;
+    private Map<String, IProvideProperties> reportsMap;
     private BufferingReceiver<ReceiptMsg> receiverReceipt;
     private BufferingReceiver<KeyValueMsg> receiverSettings;
     private BufferingReceiver<KeyValueMsg> receiverReports;

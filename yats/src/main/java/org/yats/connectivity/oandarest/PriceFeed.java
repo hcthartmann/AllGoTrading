@@ -21,7 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class PriceFeed implements IProvidePriceFeed, Runnable {
 
@@ -164,9 +164,9 @@ public class PriceFeed implements IProvidePriceFeed, Runnable {
 
     public PriceFeed(IProvideProperties properties) {
         this.properties = properties;
-        mapPidToSymbol = new ConcurrentHashMap<String, String>();
-        subscriptionList = new ConcurrentHashMap<String, IConsumePriceData>();
-        mapSymbolToPid = new ConcurrentHashMap<String, String>();
+        mapPidToSymbol = new Map<String, String>();
+        subscriptionList = new Map<String, IConsumePriceData>();
+        mapSymbolToPid = new Map<String, String>();
         thread = new Thread(this);
         httpClient = new DefaultHttpClient();
         stopReceiving = false;
@@ -187,9 +187,9 @@ public class PriceFeed implements IProvidePriceFeed, Runnable {
     private String secret;
     private IProvideProperties properties;
     private IProvideProduct productProvider;
-    private ConcurrentHashMap<String, IConsumePriceData> subscriptionList;
-    private ConcurrentHashMap<String, String> mapPidToSymbol;
-    private ConcurrentHashMap<String, String> mapSymbolToPid;
+    private Map<String, IConsumePriceData> subscriptionList;
+    private Map<String, String> mapPidToSymbol;
+    private Map<String, String> mapSymbolToPid;
     IConsumePriceData priceDataConsumer;
 
 }

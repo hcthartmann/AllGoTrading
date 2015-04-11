@@ -20,4 +20,10 @@ public class ConnectivityExceptions {
         }
     }
 
+    public static class UnknownIdException extends RuntimeException {
+        public UnknownIdException(String msg) {
+            super(msg);
+        }
+    }
+
 }

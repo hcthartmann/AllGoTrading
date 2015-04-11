@@ -379,8 +379,8 @@ public class FXOrders implements ISendOrder, Runnable {
     private DefaultHttpClient httpPoll;
     private DefaultHttpClient httpStream;
     private String storageFilename = "FXOrderCache.json";
-//    private ConcurrentHashMap<String, Receipt> oandaId2Receipt;
-//    private ConcurrentHashMap<String, String> orderId2OandaIdMap;
+//    private Map<String, Receipt> oandaId2Receipt;
+//    private Map<String, String> orderId2OandaIdMap;
 //    private String orderId2OandaIdMapFilename;
 //    private String oandaId2OrderMapFilename;
     Id2ReceiptMap id2ReceiptMap;

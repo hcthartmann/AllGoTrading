@@ -2,8 +2,8 @@ package org.yats.trading;
 
 import org.yats.common.CommonExceptions;
 import org.yats.common.Decimal;
+import org.yats.common.Map;
 
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PriceDataMap {
 
@@ -25,10 +25,10 @@ public class PriceDataMap {
     }
 
     public PriceDataMap() {
-        rates = new ConcurrentHashMap<String, PriceData>();
+        rates = new Map<String, PriceData>();
     }
 
-    private ConcurrentHashMap<String, PriceData> rates;
+    private Map<String, PriceData> rates;
 
 
 } // class

@@ -2,10 +2,11 @@ package org.yats.trading;
 
 import au.com.bytecode.opencsv.CSVReader;
 import org.yats.common.CommonExceptions;
+import org.yats.common.Map;
 
 import java.io.FileReader;
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class ProductList implements IProvideProduct {
 
@@ -155,7 +156,7 @@ public class ProductList implements IProvideProduct {
     }
 
     public ProductList() {
-        list = new ConcurrentHashMap<String, Product>();
+        list = new Map<String, Product>();
     }
 
 
@@ -164,6 +165,6 @@ public class ProductList implements IProvideProduct {
         return text;
     }
 
-    ConcurrentHashMap<String, Product> list;
+    Map<String, Product> list;
 
 } // class

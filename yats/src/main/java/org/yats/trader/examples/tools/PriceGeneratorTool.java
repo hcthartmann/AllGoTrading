@@ -2,10 +2,7 @@ package org.yats.trader.examples.tools;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yats.common.Decimal;
-import org.yats.common.IProvideProperties;
-import org.yats.common.PropertiesReader;
-import org.yats.common.Tool;
+import org.yats.common.*;
 import org.yats.messagebus.Config;
 import org.yats.messagebus.Sender;
 import org.yats.messagebus.messages.PriceDataMsg;
@@ -15,7 +12,7 @@ import org.yats.trading.ProductList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class PriceGeneratorTool implements Runnable {
 
@@ -107,7 +104,7 @@ public class PriceGeneratorTool implements Runnable {
         String[] parts = pidListString.split(",");
         pidList = Arrays.asList(parts);
 
-        lastData = new ConcurrentHashMap<String, PriceData>();
+        lastData = new Map<String, PriceData>();
         int i=1;
         for(String pid : pidList) {
             Decimal priceBase = Decimal.fromDouble(i++);
@@ -129,7 +126,7 @@ public class PriceGeneratorTool implements Runnable {
     private Thread thread;
     private ProductList productList;
     private List<String> pidList;
-    private ConcurrentHashMap<String,PriceData> lastData;
+    private Map<String,PriceData> lastData;
     private int counter;
     private int interval;
 

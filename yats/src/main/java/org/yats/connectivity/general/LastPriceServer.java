@@ -10,7 +10,8 @@ import org.yats.messagebus.messages.SubscriptionMsg;
 import org.yats.trading.IConsumePriceData;
 import org.yats.trading.PriceData;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Enumeration;
+
 
 public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
 
@@ -60,7 +61,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     {
         shutdown=false;
         cacheFilename = _prop.get("cacheFilename");
-        cache = new ConcurrentHashMap<String, PriceData>();
+        cache = new Map<String, PriceData>();
         readCacheFromDisk();
         Config config =  Config.fromProperties(_prop);
         strategyToBusConnection = new StrategyToBusConnection(_prop);
@@ -98,7 +99,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     {
         shutdown=false;
         cacheFilename = _cacheFilename;
-        cache = new ConcurrentHashMap<String, PriceData>();
+        cache = new Map<String, PriceData>();
         strategyToBusConnection = _connection;
         receiverSubscription = _subscriptionReceiver;
         senderPriceDataMsg = _senderPriceDataMsg;
@@ -110,7 +111,10 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     private void writeCacheToDisk() {
         StringBuilder b = new StringBuilder();
         Serializer<PriceDataMsg> serializer = new Serializer<PriceDataMsg>();
-        for(String key : cache.keySet()) {
+
+        Enumeration<String> cacheKeys = cache.keys();
+        while(cacheKeys.hasMoreElements()) {
+            String key = cacheKeys.nextElement();
             PriceData d = cache.get(key);
             PriceDataMsg m = PriceDataMsg.createFrom(d);
             String s = serializer.convertToString(m);
@@ -147,7 +151,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
 
     private final String cacheFilename;
     private Sender<PriceDataMsg> senderPriceDataMsg;
-    private ConcurrentHashMap<String, PriceData> cache;
+    private Map<String, PriceData> cache;
     private BufferingReceiver<SubscriptionMsg> receiverSubscription;
     private final boolean shutdown;
     private final StrategyToBusConnection strategyToBusConnection;

@@ -1,5 +1,6 @@
 package org.yats.common;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IProvideProperties {
@@ -12,7 +13,7 @@ public interface IProvideProperties {
     boolean getAsBoolean(String _key, boolean _defaultValue);
     Decimal getAsDecimal(String _key);
     String[] getCSVAsArray(String _key);
-    Set<String> getKeySet();
+    List<String> getKeySet();
 
     void set(String key, boolean value);
     void set(String key, Decimal value);

@@ -2,10 +2,11 @@ package org.yats.connectivity.matching;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yats.common.Map;
 import org.yats.common.UniqueId;
 import org.yats.trading.*;
 
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class InternalMarket implements IProvidePriceFeed,ISendOrder,IConsumePriceDataAndReceipt {
 
@@ -86,8 +87,8 @@ public class InternalMarket implements IProvidePriceFeed,ISendOrder,IConsumePric
     public InternalMarket(String _externalAccount, String _marketName) {
         externalAccount = _externalAccount;
         marketName = _marketName;
-        orderBooks = new ConcurrentHashMap<String, LimitOrderBook>();
-        cancelOrderMap = new ConcurrentHashMap<String, OrderCancel>();
+        orderBooks = new Map<String, LimitOrderBook>();
+        cancelOrderMap = new Map<String, OrderCancel>();
         priceConsumer=null;
         receiptConsumer=null;
         productProvider=null;
@@ -120,8 +121,8 @@ public class InternalMarket implements IProvidePriceFeed,ISendOrder,IConsumePric
         }
     }
 
-    private ConcurrentHashMap<String, OrderCancel> cancelOrderMap;
-    private ConcurrentHashMap<String, LimitOrderBook> orderBooks;
+    private Map<String, OrderCancel> cancelOrderMap;
+    private Map<String, LimitOrderBook> orderBooks;
     private IConsumePriceData priceConsumer;
     private IConsumeReceipt receiptConsumer;
     private IProvideProduct productProvider;

@@ -1,8 +1,7 @@
 package org.yats.trading;
 
-import java.util.concurrent.ConcurrentHashMap;
 
-
+import org.yats.common.Map;
 
 public class ProfitSnapshot {
 
@@ -21,8 +20,8 @@ public class ProfitSnapshot {
     }
 
     public ProfitSnapshot() {
-        profitMap = new ConcurrentHashMap<String, ProductAccountProfit>();
+        profitMap = new Map<String, ProductAccountProfit>();
     }
 
-    ConcurrentHashMap<String, ProductAccountProfit> profitMap;
+    Map<String, ProductAccountProfit> profitMap;
 } // class

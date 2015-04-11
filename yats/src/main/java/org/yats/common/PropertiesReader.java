@@ -3,7 +3,7 @@ package org.yats.common;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 
 // the properties file needs to contain key-value pairs in form "key=value"
@@ -12,7 +12,7 @@ public class PropertiesReader implements IProvideProperties {
 
     public PropertiesReader() {
 //        properties = new Properties();
-        properties = new ConcurrentHashMap<String, String>();
+        properties = new Map<String, String>();
     }
 
     public static PropertiesReader createFromTwoProviders(IProvideProperties prop1, IProvideProperties prop2) {
@@ -117,25 +117,25 @@ public class PropertiesReader implements IProvideProperties {
         return p;
     }
 
-    public ConcurrentHashMap<String,String> toMap() {
-        ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
-        for(String key : properties.keySet()) {
+    public Map<String,String> toMap() {
+        Map<String, String> map = new Map<String, String>();
+        for(String key : properties.keyList()) {
             map.put(key, properties.get(key));
         }
         return map;
     }
 
-    public static PropertiesReader createFromMap(ConcurrentHashMap<String, String> map) {
+    public static PropertiesReader createFromMap(Map<String, String> map) {
         PropertiesReader r = new PropertiesReader();
-        for(String key : map.keySet()) {
+        for(String key : map.keyList()) {
             r.set(key, map.get(key));
         }
         return r;
     }
 
     @Override
-    public Set<String> getKeySet() {
-        return properties.keySet();
+    public List<String> getKeySet() {
+        return properties.keyList();
     }
 
     @Override
@@ -259,7 +259,7 @@ public class PropertiesReader implements IProvideProperties {
 
 
     /////////////////////////////////////////////////////////////////////////////
-    ConcurrentHashMap<String, String> properties;
+    Map<String, String> properties;
 
 //    Properties properties;
 }

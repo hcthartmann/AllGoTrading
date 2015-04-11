@@ -5,10 +5,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.yats.common.Decimal;
+import org.yats.common.Map;
 import org.yats.connectivity.ConnectivityExceptions;
 import org.yats.trading.*;
 
 import java.io.IOException;
+
 
 /*
 * API description:
@@ -22,6 +24,8 @@ public class PriceFeed796 implements IProvidePriceData
     @Override
     public PriceData getPriceData(String productId)
     {
+        if(!mapPid2XPid.containsKey(productId)) throw new ConnectivityExceptions.UnknownIdException("Unknown:"+productId);
+
         try {
             OfferBook book = getDepth();
             if(book.isAnyBookSideEmpty()) throw new ConnectivityExceptions.ConnectionException("received empty book!");
@@ -51,7 +55,8 @@ public class PriceFeed796 implements IProvidePriceData
     }
 
 
-    public PriceFeed796() {
+    public PriceFeed796(Map<String,String> _mapPid2XPid) {
+        mapPid2XPid=_mapPid2XPid;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,5 +88,6 @@ public class PriceFeed796 implements IProvidePriceData
         return offerBook;
     }
 
+    private Map<String,String> mapPid2XPid;
 
 }

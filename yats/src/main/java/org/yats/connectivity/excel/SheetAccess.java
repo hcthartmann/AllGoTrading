@@ -5,10 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yats.common.CommonExceptions;
-import org.yats.common.IProvideProperties;
-import org.yats.common.PropertiesReader;
-import org.yats.common.Tool;
+import org.yats.common.*;
 import org.yats.trader.StrategyBase;
 import org.yats.trading.ISendBulkSettings;
 
@@ -16,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SheetAccess implements DDELinkEventListener, Runnable {
@@ -57,8 +54,8 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
                 settingsRows.clear();
                 resendSettings=false;
             }
-            ConcurrentHashMap<String,String> oldSettingsRows = settingsRows;
-            ConcurrentHashMap<String,String> change = new ConcurrentHashMap<String, String>();
+            Map<String,String> oldSettingsRows = settingsRows;
+            Map<String,String> change = new Map<String, String>();
             readSettingsRows();
             for(String rowString : settingsRows.values()) {
                 if(oldSettingsRows.containsKey(rowString)) continue;
@@ -83,7 +80,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
 
 
     public synchronized void readSettingsRows() {
-        settingsRows = new ConcurrentHashMap<String, String>();
+        settingsRows = new Map<String, String>();
         for(int rowIndex=0; rowIndex < rowIdList.size(); rowIndex++) {
             String rowString = readRow(rowIndex+2);
             settingsRows.put(rowString, rowString);
@@ -93,7 +90,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         return parseSettingsRows(settingsRows);
     }
 
-    public Collection<IProvideProperties> parseSettingsRows(ConcurrentHashMap<String, String> _map) {
+    public Collection<IProvideProperties> parseSettingsRows(Map<String, String> _map) {
         Collection<IProvideProperties> all = new ArrayList<IProvideProperties>();
         for(String rowString : _map.values()) {
             String tabbedRowString = rowString.replace(NL, TAB);
@@ -127,7 +124,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
     public synchronized void updateMatrix(Collection<MatrixItem> itemList) {
         updateAxis(itemList);
         if(snapShotMode) combiKey2ItemMap.clear();
-        ConcurrentHashMap<String, String> rowIdsWithChangedData = getRowIdsToUpdate(itemList);
+        Map<String, String> rowIdsWithChangedData = getRowIdsToUpdate(itemList);
         updateCombiKey2ItemMap(itemList);
         updateChangedRows(rowIdsWithChangedData);
 //        String allRows = "";
@@ -141,10 +138,10 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
 
     }
 
-    private void updateChangedRows(ConcurrentHashMap<String, String> rowIdsToUpdate) {
+    private void updateChangedRows(Map<String, String> rowIdsToUpdate) {
         DateTime startSheet = DateTime.now();
         int i=0;
-        for (String p : rowIdsToUpdate.keySet()) {
+        for (String p : rowIdsToUpdate.keyList()) {
             pokeRowForRowId(p);
             i++;
         }
@@ -235,11 +232,11 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         ddeLink.setEventListener(this);
         removedIdList = new ConcurrentLinkedQueue<String>();
         columnIdList = new ArrayList<String>();
-        mapOfColumnIds = new ConcurrentHashMap<String, String>();
+        mapOfColumnIds = new Map<String, String>();
         rowIdList = new ArrayList<String>();
-        mapOfRowIds = new ConcurrentHashMap<String, String>();
-        combiKey2ItemMap = new ConcurrentHashMap<String, MatrixItem>();
-        settingsRows = new ConcurrentHashMap<String, String>();
+        mapOfRowIds = new Map<String, String>();
+        combiKey2ItemMap = new Map<String, MatrixItem>();
+        settingsRows = new Map<String, String>();
         snapShotMode=true;
         naString="n/a";
         listenerAxisChange=new IConsumeAxisChanges() {
@@ -308,8 +305,8 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         }
     }
 
-    private ConcurrentHashMap<String, String> getRowIdsToUpdate(Collection<MatrixItem> list) {
-        ConcurrentHashMap<String, String> rowIdsToUpdate = new ConcurrentHashMap<String, String>();
+    private Map<String, String> getRowIdsToUpdate(Collection<MatrixItem> list) {
+        Map<String, String> rowIdsToUpdate = new Map<String, String>();
         for (MatrixItem item : list) {
             String key = item.getKey();
             if (combiKey2ItemMap.containsKey(key)) {
@@ -343,7 +340,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         }
     }
 
-    private void updateList(List<String> list, ConcurrentHashMap<String, String> map, String item) {
+    private void updateList(List<String> list, Map<String, String> map, String item) {
         if (map.containsKey(item)) return;
         list.add(item);
         map.put(item, item);
@@ -462,13 +459,13 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
     private static String TAB = "\t";
     private static String NL = "\r\n";
 
-    private ConcurrentHashMap<String,String> settingsRows;
+    private Map<String,String> settingsRows;
     private boolean snapShotMode;
-    private ConcurrentHashMap<String, MatrixItem> combiKey2ItemMap;
+    private Map<String, MatrixItem> combiKey2ItemMap;
     private ArrayList<String> columnIdList;
-    private ConcurrentHashMap<String,String> mapOfColumnIds;
+    private Map<String,String> mapOfColumnIds;
     private ArrayList<String> rowIdList;
-    private ConcurrentHashMap<String,String> mapOfRowIds;
+    private Map<String,String> mapOfRowIds;
     private final IProvideDDEConversation ddeLink;
     private String naString;
     private IConsumeAxisChanges listenerAxisChange;

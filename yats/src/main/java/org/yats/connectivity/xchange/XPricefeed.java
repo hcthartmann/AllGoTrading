@@ -7,8 +7,7 @@ import org.yats.trading.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Created
@@ -65,7 +64,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     public XPricefeed(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
         subscribableProductIds = _subscribableProductIds;
         priceDataProvider=_priceDataProvider;
-        subscriptionList = new ConcurrentHashMap<String, IConsumePriceData>();
+        subscriptionList = new Map<String, IConsumePriceData>();
         thread = new Thread(this);
         shutdown = false;
         running=true;
@@ -73,12 +72,11 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
 
     //////////////////////////////////////////////////////////////////////////////////////
 
-    private void receive() throws IOException {
-
-        for(Map.Entry<String,IConsumePriceData> e : subscriptionList.entrySet())
+    private void receive() throws IOException
+    {
+        for(String pid : subscriptionList.keyList())
         {
-            String pid = e.getKey();
-            IConsumePriceData priceDataConsumer = e.getValue();
+            IConsumePriceData priceDataConsumer = subscriptionList.get(pid);
             PriceData data = priceDataProvider.getPriceData(pid);
             priceDataConsumer.onPriceData(data);
         }
@@ -87,7 +85,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     private boolean running;
     private boolean shutdown;
     private Thread thread;
-    private ConcurrentHashMap<String, IConsumePriceData> subscriptionList;
+    private Map<String, IConsumePriceData> subscriptionList;
     private IProvidePriceData priceDataProvider;
     private List<String> subscribableProductIds;
 

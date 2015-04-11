@@ -10,8 +10,10 @@ import org.yats.trading.OrderCancel;
 import org.yats.trading.OrderNew;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 /*
 *
@@ -88,8 +90,8 @@ public class TradeConnection796  {
     * ltc_marginaccount=50
     *
      */
-    public ConcurrentHashMap<String, Decimal> getAssets() throws IOException, JSONException {
-        ConcurrentHashMap<String, Decimal> assetsMap = new ConcurrentHashMap<String, Decimal>();
+    public Map<String, Decimal> getAssets() throws IOException, JSONException {
+        Map<String, Decimal> assetsMap = new TreeMap<String, Decimal>();
 
         Map<String, String> requestMap = new TreeMap<String, String>();
         requestMap.put("apikey", key);

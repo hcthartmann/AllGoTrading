@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.Decimal;
 import org.yats.common.IProvideProperties;
+import org.yats.common.Map;
 import org.yats.trader.StrategyBase;
 import org.yats.trading.PriceData;
 import org.yats.trading.PriceDataInDoubleFormat;
@@ -13,7 +14,7 @@ import org.yats.trading.Receipt;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 public class PriceCheck extends StrategyBase{
 
@@ -141,7 +142,7 @@ public class PriceCheck extends StrategyBase{
     private PriceData lastPrice;
     private EPRuntime cepRT;
 
-    private ConcurrentHashMap<String,PriceData> lastPrices=new ConcurrentHashMap();
+    private Map<String,PriceData> lastPrices=new Map();
     private boolean shuttingDown;
     private String tradeProductIds;
     private static int dots = 0;
