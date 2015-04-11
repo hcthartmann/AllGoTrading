@@ -2,7 +2,7 @@ package org.yats.trading;
 
 import org.yats.common.CommonExceptions;
 import org.yats.common.Decimal;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 
 
 public class PriceDataMap {
@@ -25,10 +25,10 @@ public class PriceDataMap {
     }
 
     public PriceDataMap() {
-        rates = new Map<String, PriceData>();
+        rates = new Mapping<String, PriceData>();
     }
 
-    private Map<String, PriceData> rates;
+    private Mapping<String, PriceData> rates;
 
 
 } // class

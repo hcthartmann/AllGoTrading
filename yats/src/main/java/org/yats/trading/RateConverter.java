@@ -1,7 +1,7 @@
 package org.yats.trading;
 
 import org.yats.common.Decimal;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.common.UniqueId;
 
 import java.util.Vector;
@@ -110,7 +110,7 @@ public class RateConverter implements IConsumePriceData, IConvertRate {
         Vector<Product> onlinePairs = new Vector<Product>();
 
         Vector<Product> originalProducts = new Vector<Product>();
-        Map<Product, Vector<Product>> nextPair = new Map<Product, Vector<Product>>();
+        Mapping<Product, Vector<Product>> nextPair = new Mapping<Product, Vector<Product>>();
 
 
 //In this segment I'll collect the pairs available in rates
@@ -202,7 +202,7 @@ public class RateConverter implements IConsumePriceData, IConvertRate {
     public RateConverter(IProvideProduct p) {
         products = p;
         rates = new PriceDataMap();
-        cache = new Map<String, RatesChain>();
+        cache = new Mapping<String, RatesChain>();
         cacheHits=0;
     }
 
@@ -228,7 +228,7 @@ public class RateConverter implements IConsumePriceData, IConvertRate {
 
     private PriceDataMap rates;
     private IProvideProduct products;
-    private Map<String, RatesChain> cache;
+    private Mapping<String, RatesChain> cache;
     private int cacheHits;
 
 }

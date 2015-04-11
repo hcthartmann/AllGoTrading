@@ -2,7 +2,7 @@ package org.yats.connectivity.matching;
 
 import org.yats.common.CommonExceptions;
 import org.yats.common.Decimal;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.common.UniqueId;
 import org.yats.trading.*;
 
@@ -123,7 +123,7 @@ public class LimitOrderBookSide implements IConsumeReceipt {
         book = _side==BookSide.BID
                 ? new TreeMap<Decimal, PriceLevel>(Collections.reverseOrder())
                 : new TreeMap<Decimal, PriceLevel>();
-        bookByOrderId = new Map<String, PriceLevel>();
+        bookByOrderId = new Mapping<String, PriceLevel>();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ public class LimitOrderBookSide implements IConsumeReceipt {
     private IConsumeReceipt receiptConsumer;
 
     private SortedMap<Decimal,PriceLevel> book;
-    private Map<String, PriceLevel> bookByOrderId;
+    private Mapping<String, PriceLevel> bookByOrderId;
     private boolean takerReceiptSent;
 
 

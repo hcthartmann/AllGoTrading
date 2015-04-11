@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.yats.common.Decimal;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.trading.BookSide;
 import org.yats.trading.OfferBook;
 
@@ -46,7 +46,7 @@ public class PriceFeed796Test {
     @BeforeMethod(alwaysRun = true)
     public void setUp()
     {
-        priceFeed = new PriceFeed796(new Map<String, String>());
+        priceFeed = new PriceFeed796(new Mapping<String, String>());
     }
 
     /////////////////////////////////////////////////////////////////////

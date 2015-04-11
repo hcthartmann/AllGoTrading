@@ -5,7 +5,7 @@ import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.IProvideProperties;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.common.Tool;
 import org.yats.connectivity.messagebus.StrategyToBusConnection;
 import org.yats.trading.*;
@@ -223,11 +223,11 @@ public class ExcelConnection implements
                            IProvideDDEConversation _settingsConversation
     )
     {
-        priceUpdateTimes = new Map<String, DateTime>();
+        priceUpdateTimes = new Mapping<String, DateTime>();
         prop = _prop;
         productList=_products;
         if (!Tool.isWindows()) System.out.println("This is not Windows! DDELink will not work!");
-        reportsMap = new Map<String, MatrixItem>();
+        reportsMap = new Mapping<String, MatrixItem>();
         sheetAccessPositions = new SheetAccess(_positionConversation);
         sheetAccessReports = new SheetAccess(_reportConversation);
         sheetAccessReports.setSnapShotMode(false);
@@ -235,7 +235,7 @@ public class ExcelConnection implements
         sheetAccessPrices = new SheetAccess(_priceConversation);
         sheetAccessPrices.setNaString("");
         sheetAccessPrices.setFirstRowListener(this);
-        knownProducts = new Map<String, String>();
+        knownProducts = new Mapping<String, String>();
         sheetAccessSettings =new SheetAccess(_settingsConversation);
         sheetAccessSettings.setSettingsSender(this);
 
@@ -271,9 +271,9 @@ public class ExcelConnection implements
     private StrategyToBusConnection strategyToBusConnection;
     private IProvideProperties prop;
     private IProvideProduct productList;
-    private Map<String, MatrixItem> reportsMap;
-    private Map<String, String> knownProducts;
-    private Map<String, DateTime> priceUpdateTimes;
+    private Mapping<String, MatrixItem> reportsMap;
+    private Mapping<String, String> knownProducts;
+    private Mapping<String, DateTime> priceUpdateTimes;
     private long resubscribeMillis;
 
 } // class

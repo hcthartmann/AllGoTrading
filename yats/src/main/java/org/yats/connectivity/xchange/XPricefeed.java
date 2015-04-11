@@ -64,7 +64,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     public XPricefeed(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
         subscribableProductIds = _subscribableProductIds;
         priceDataProvider=_priceDataProvider;
-        subscriptionList = new Map<String, IConsumePriceData>();
+        subscriptionList = new Mapping<String, IConsumePriceData>();
         thread = new Thread(this);
         shutdown = false;
         running=true;
@@ -85,7 +85,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     private boolean running;
     private boolean shutdown;
     private Thread thread;
-    private Map<String, IConsumePriceData> subscriptionList;
+    private Mapping<String, IConsumePriceData> subscriptionList;
     private IProvidePriceData priceDataProvider;
     private List<String> subscribableProductIds;
 

@@ -12,7 +12,7 @@ public class PropertiesReader implements IProvideProperties {
 
     public PropertiesReader() {
 //        properties = new Properties();
-        properties = new Map<String, String>();
+        properties = new Mapping<String, String>();
     }
 
     public static PropertiesReader createFromTwoProviders(IProvideProperties prop1, IProvideProperties prop2) {
@@ -117,15 +117,15 @@ public class PropertiesReader implements IProvideProperties {
         return p;
     }
 
-    public Map<String,String> toMap() {
-        Map<String, String> map = new Map<String, String>();
+    public Mapping<String,String> toMap() {
+        Mapping<String, String> map = new Mapping<String, String>();
         for(String key : properties.keyList()) {
             map.put(key, properties.get(key));
         }
         return map;
     }
 
-    public static PropertiesReader createFromMap(Map<String, String> map) {
+    public static PropertiesReader createFromMap(Mapping<String, String> map) {
         PropertiesReader r = new PropertiesReader();
         for(String key : map.keyList()) {
             r.set(key, map.get(key));
@@ -259,7 +259,7 @@ public class PropertiesReader implements IProvideProperties {
 
 
     /////////////////////////////////////////////////////////////////////////////
-    Map<String, String> properties;
+    Mapping<String, String> properties;
 
 //    Properties properties;
 }

@@ -61,7 +61,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     {
         shutdown=false;
         cacheFilename = _prop.get("cacheFilename");
-        cache = new Map<String, PriceData>();
+        cache = new Mapping<String, PriceData>();
         readCacheFromDisk();
         Config config =  Config.fromProperties(_prop);
         strategyToBusConnection = new StrategyToBusConnection(_prop);
@@ -99,7 +99,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     {
         shutdown=false;
         cacheFilename = _cacheFilename;
-        cache = new Map<String, PriceData>();
+        cache = new Mapping<String, PriceData>();
         strategyToBusConnection = _connection;
         receiverSubscription = _subscriptionReceiver;
         senderPriceDataMsg = _senderPriceDataMsg;
@@ -151,7 +151,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
 
     private final String cacheFilename;
     private Sender<PriceDataMsg> senderPriceDataMsg;
-    private Map<String, PriceData> cache;
+    private Mapping<String, PriceData> cache;
     private BufferingReceiver<SubscriptionMsg> receiverSubscription;
     private final boolean shutdown;
     private final StrategyToBusConnection strategyToBusConnection;

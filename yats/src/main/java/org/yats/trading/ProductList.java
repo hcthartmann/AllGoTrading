@@ -2,7 +2,7 @@ package org.yats.trading;
 
 import au.com.bytecode.opencsv.CSVReader;
 import org.yats.common.CommonExceptions;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 
 import java.io.FileReader;
 import java.util.Collection;
@@ -156,7 +156,7 @@ public class ProductList implements IProvideProduct {
     }
 
     public ProductList() {
-        list = new Map<String, Product>();
+        list = new Mapping<String, Product>();
     }
 
 
@@ -165,6 +165,6 @@ public class ProductList implements IProvideProduct {
         return text;
     }
 
-    Map<String, Product> list;
+    Mapping<String, Product> list;
 
 } // class

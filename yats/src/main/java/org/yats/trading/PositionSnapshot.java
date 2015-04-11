@@ -2,7 +2,7 @@ package org.yats.trading;
 
 import org.joda.time.DateTime;
 import org.yats.common.Decimal;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.common.Tool;
 
 import java.util.Collection;
@@ -158,7 +158,7 @@ public class PositionSnapshot implements IProvidePosition {
     }
 
     public PositionSnapshot() {
-        positionMap = new Map<String, AccountPosition>();
+        positionMap = new Mapping<String, AccountPosition>();
         rateConverter = new RateConverter(new ProductList());
         updateLastChange();
     }
@@ -170,7 +170,7 @@ public class PositionSnapshot implements IProvidePosition {
     }
 
     private DateTime lastChange;
-    private Map<String, AccountPosition> positionMap;
+    private Mapping<String, AccountPosition> positionMap;
     private IConvertRate rateConverter;
 
 } // class

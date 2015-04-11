@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.Decimal;
 import org.yats.common.IProvideProperties;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.trader.StrategyBase;
 import org.yats.trading.PriceData;
 import org.yats.trading.PriceDataInDoubleFormat;
@@ -142,7 +142,7 @@ public class PriceCheck extends StrategyBase{
     private PriceData lastPrice;
     private EPRuntime cepRT;
 
-    private Map<String,PriceData> lastPrices=new Map();
+    private Mapping<String,PriceData> lastPrices=new Mapping();
     private boolean shuttingDown;
     private String tradeProductIds;
     private static int dots = 0;

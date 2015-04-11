@@ -1,7 +1,7 @@
 package org.yats.trading;
 
 
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 
 public class ProfitSnapshot {
 
@@ -20,8 +20,8 @@ public class ProfitSnapshot {
     }
 
     public ProfitSnapshot() {
-        profitMap = new Map<String, ProductAccountProfit>();
+        profitMap = new Mapping<String, ProductAccountProfit>();
     }
 
-    Map<String, ProductAccountProfit> profitMap;
+    Mapping<String, ProductAccountProfit> profitMap;
 } // class

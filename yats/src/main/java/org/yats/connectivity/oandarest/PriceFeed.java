@@ -164,9 +164,9 @@ public class PriceFeed implements IProvidePriceFeed, Runnable {
 
     public PriceFeed(IProvideProperties properties) {
         this.properties = properties;
-        mapPidToSymbol = new Map<String, String>();
-        subscriptionList = new Map<String, IConsumePriceData>();
-        mapSymbolToPid = new Map<String, String>();
+        mapPidToSymbol = new Mapping<String, String>();
+        subscriptionList = new Mapping<String, IConsumePriceData>();
+        mapSymbolToPid = new Mapping<String, String>();
         thread = new Thread(this);
         httpClient = new DefaultHttpClient();
         stopReceiving = false;
@@ -187,9 +187,9 @@ public class PriceFeed implements IProvidePriceFeed, Runnable {
     private String secret;
     private IProvideProperties properties;
     private IProvideProduct productProvider;
-    private Map<String, IConsumePriceData> subscriptionList;
-    private Map<String, String> mapPidToSymbol;
-    private Map<String, String> mapSymbolToPid;
+    private Mapping<String, IConsumePriceData> subscriptionList;
+    private Mapping<String, String> mapPidToSymbol;
+    private Mapping<String, String> mapSymbolToPid;
     IConsumePriceData priceDataConsumer;
 
 }

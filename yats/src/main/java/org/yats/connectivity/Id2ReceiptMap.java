@@ -1,7 +1,7 @@
 package org.yats.connectivity;
 
 import org.yats.common.FileTool;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.messagebus.Deserializer;
 import org.yats.messagebus.Serializer;
 import org.yats.messagebus.messages.ReceiptMsg;
@@ -167,12 +167,12 @@ public class Id2ReceiptMap {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     private void init() {
-        externalId2Receipt =new Map<String, ReceiptMsg>();
-        orderId2ExternalIdMap =new Map<String, String>();
+        externalId2Receipt =new Mapping<String, ReceiptMsg>();
+        orderId2ExternalIdMap =new Mapping<String, String>();
     }
 
-    private Map<String, ReceiptMsg> externalId2Receipt;
-    private Map<String, String> orderId2ExternalIdMap;
+    private Mapping<String, ReceiptMsg> externalId2Receipt;
+    private Mapping<String, String> orderId2ExternalIdMap;
 
 
 } // class

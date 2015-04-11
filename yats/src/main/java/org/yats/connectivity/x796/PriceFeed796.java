@@ -5,7 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.yats.common.Decimal;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.connectivity.ConnectivityExceptions;
 import org.yats.trading.*;
 
@@ -55,7 +55,7 @@ public class PriceFeed796 implements IProvidePriceData
     }
 
 
-    public PriceFeed796(Map<String,String> _mapPid2XPid) {
+    public PriceFeed796(Mapping<String,String> _mapPid2XPid) {
         mapPid2XPid=_mapPid2XPid;
     }
 
@@ -88,6 +88,6 @@ public class PriceFeed796 implements IProvidePriceData
         return offerBook;
     }
 
-    private Map<String,String> mapPid2XPid;
+    private Mapping<String,String> mapPid2XPid;
 
 }

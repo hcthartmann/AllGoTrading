@@ -5,7 +5,7 @@ import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.IProvideProperties;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.common.PropertiesReader;
 import org.yats.common.Tool;
 import org.yats.messagebus.Config;
@@ -126,8 +126,8 @@ public class PricePlaybackTool implements Runnable {
         String[] parts = pidListString.split(",");
         pidList = Arrays.asList(parts);
 
-        readerMap = new Map<String, ReadPriceJSON>();
-        productPriceMap = new Map<String, PriceData>();
+        readerMap = new Mapping<String, ReadPriceJSON>();
+        productPriceMap = new Mapping<String, PriceData>();
 
         for(String pid : pidList) {
             ReadPriceJSON csvReader = new ReadPriceJSON(baseLocation,pid);
@@ -181,10 +181,10 @@ public class PricePlaybackTool implements Runnable {
 
     private Sender<PriceDataMsg> senderPriceDataMsg;
     private boolean shutdownThread,publishedOnce;
-    private Map<String,PriceData> productPriceMap;
+    private Mapping<String,PriceData> productPriceMap;
     private Thread thread;
     private List<String> pidList;
-    private Map<String,ReadPriceJSON> readerMap;
+    private Mapping<String,ReadPriceJSON> readerMap;
     private double speedFactor;
     private String baseLocation;
     private int productPublishedCount;

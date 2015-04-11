@@ -3,8 +3,6 @@ package org.yats.connectivity.xchange;
 import com.xeiam.xchange.Exchange;
 import com.xeiam.xchange.ExchangeFactory;
 import com.xeiam.xchange.btcchina.BTCChinaExchange;
-import com.xeiam.xchange.btcchina.dto.marketdata.BTCChinaDepth;
-import com.xeiam.xchange.btcchina.service.polling.BTCChinaMarketDataServiceRaw;
 import com.xeiam.xchange.currency.CurrencyPair;
 import com.xeiam.xchange.dto.marketdata.OrderBook;
 import com.xeiam.xchange.dto.trade.LimitOrder;
@@ -12,7 +10,7 @@ import com.xeiam.xchange.service.polling.marketdata.PollingMarketDataService;
 import org.joda.time.DateTime;
 import org.yats.common.Decimal;
 import org.yats.common.IProvidePriceDataProvider;
-import org.yats.common.Map;
+import org.yats.common.Mapping;
 import org.yats.common.PropertiesReader;
 import org.yats.connectivity.ConnectivityExceptions;
 import org.yats.trading.*;
@@ -65,10 +63,10 @@ public class BtcchinaPricePoll implements IProvidePriceData
         }
     }
 
-    public BtcchinaPricePoll(Exchange _exchange, Map<String, String> _mapPidToExchangeSymbol) {
+    public BtcchinaPricePoll(Exchange _exchange, Mapping<String, String> _mapPidToExchangeSymbol) {
         exchange = _exchange;
         mapPidToExchangeSymbol = _mapPidToExchangeSymbol;
-        mapPidToXPid = new Map<String, CurrencyPair>();
+        mapPidToXPid = new Mapping<String, CurrencyPair>();
         mapPidToXPid.put("BTCC_XBTCNY", CurrencyPair.BTC_CNY);
     }
 
@@ -91,6 +89,6 @@ public class BtcchinaPricePoll implements IProvidePriceData
 
 
     private Exchange exchange;
-    private Map<String,String> mapPidToExchangeSymbol;
-    private Map<String,CurrencyPair> mapPidToXPid;
+    private Mapping<String,String> mapPidToExchangeSymbol;
+    private Mapping<String,CurrencyPair> mapPidToXPid;
 }

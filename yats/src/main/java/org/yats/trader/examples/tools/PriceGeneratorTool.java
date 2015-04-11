@@ -104,7 +104,7 @@ public class PriceGeneratorTool implements Runnable {
         String[] parts = pidListString.split(",");
         pidList = Arrays.asList(parts);
 
-        lastData = new Map<String, PriceData>();
+        lastData = new Mapping<String, PriceData>();
         int i=1;
         for(String pid : pidList) {
             Decimal priceBase = Decimal.fromDouble(i++);
@@ -126,7 +126,7 @@ public class PriceGeneratorTool implements Runnable {
     private Thread thread;
     private ProductList productList;
     private List<String> pidList;
-    private Map<String,PriceData> lastData;
+    private Mapping<String,PriceData> lastData;
     private int counter;
     private int interval;
 

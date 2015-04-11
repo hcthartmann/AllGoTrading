@@ -54,8 +54,8 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
                 settingsRows.clear();
                 resendSettings=false;
             }
-            Map<String,String> oldSettingsRows = settingsRows;
-            Map<String,String> change = new Map<String, String>();
+            Mapping<String,String> oldSettingsRows = settingsRows;
+            Mapping<String,String> change = new Mapping<String, String>();
             readSettingsRows();
             for(String rowString : settingsRows.values()) {
                 if(oldSettingsRows.containsKey(rowString)) continue;
@@ -80,7 +80,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
 
 
     public synchronized void readSettingsRows() {
-        settingsRows = new Map<String, String>();
+        settingsRows = new Mapping<String, String>();
         for(int rowIndex=0; rowIndex < rowIdList.size(); rowIndex++) {
             String rowString = readRow(rowIndex+2);
             settingsRows.put(rowString, rowString);
@@ -90,7 +90,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         return parseSettingsRows(settingsRows);
     }
 
-    public Collection<IProvideProperties> parseSettingsRows(Map<String, String> _map) {
+    public Collection<IProvideProperties> parseSettingsRows(Mapping<String, String> _map) {
         Collection<IProvideProperties> all = new ArrayList<IProvideProperties>();
         for(String rowString : _map.values()) {
             String tabbedRowString = rowString.replace(NL, TAB);
@@ -124,7 +124,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
     public synchronized void updateMatrix(Collection<MatrixItem> itemList) {
         updateAxis(itemList);
         if(snapShotMode) combiKey2ItemMap.clear();
-        Map<String, String> rowIdsWithChangedData = getRowIdsToUpdate(itemList);
+        Mapping<String, String> rowIdsWithChangedData = getRowIdsToUpdate(itemList);
         updateCombiKey2ItemMap(itemList);
         updateChangedRows(rowIdsWithChangedData);
 //        String allRows = "";
@@ -138,7 +138,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
 
     }
 
-    private void updateChangedRows(Map<String, String> rowIdsToUpdate) {
+    private void updateChangedRows(Mapping<String, String> rowIdsToUpdate) {
         DateTime startSheet = DateTime.now();
         int i=0;
         for (String p : rowIdsToUpdate.keyList()) {
@@ -232,11 +232,11 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         ddeLink.setEventListener(this);
         removedIdList = new ConcurrentLinkedQueue<String>();
         columnIdList = new ArrayList<String>();
-        mapOfColumnIds = new Map<String, String>();
+        mapOfColumnIds = new Mapping<String, String>();
         rowIdList = new ArrayList<String>();
-        mapOfRowIds = new Map<String, String>();
-        combiKey2ItemMap = new Map<String, MatrixItem>();
-        settingsRows = new Map<String, String>();
+        mapOfRowIds = new Mapping<String, String>();
+        combiKey2ItemMap = new Mapping<String, MatrixItem>();
+        settingsRows = new Mapping<String, String>();
         snapShotMode=true;
         naString="n/a";
         listenerAxisChange=new IConsumeAxisChanges() {
@@ -305,8 +305,8 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         }
     }
 
-    private Map<String, String> getRowIdsToUpdate(Collection<MatrixItem> list) {
-        Map<String, String> rowIdsToUpdate = new Map<String, String>();
+    private Mapping<String, String> getRowIdsToUpdate(Collection<MatrixItem> list) {
+        Mapping<String, String> rowIdsToUpdate = new Mapping<String, String>();
         for (MatrixItem item : list) {
             String key = item.getKey();
             if (combiKey2ItemMap.containsKey(key)) {
@@ -340,7 +340,7 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
         }
     }
 
-    private void updateList(List<String> list, Map<String, String> map, String item) {
+    private void updateList(List<String> list, Mapping<String, String> map, String item) {
         if (map.containsKey(item)) return;
         list.add(item);
         map.put(item, item);
@@ -459,13 +459,13 @@ public class SheetAccess implements DDELinkEventListener, Runnable {
     private static String TAB = "\t";
     private static String NL = "\r\n";
 
-    private Map<String,String> settingsRows;
+    private Mapping<String,String> settingsRows;
     private boolean snapShotMode;
-    private Map<String, MatrixItem> combiKey2ItemMap;
+    private Mapping<String, MatrixItem> combiKey2ItemMap;
     private ArrayList<String> columnIdList;
-    private Map<String,String> mapOfColumnIds;
+    private Mapping<String,String> mapOfColumnIds;
     private ArrayList<String> rowIdList;
-    private Map<String,String> mapOfRowIds;
+    private Mapping<String,String> mapOfRowIds;
     private final IProvideDDEConversation ddeLink;
     private String naString;
     private IConsumeAxisChanges listenerAxisChange;

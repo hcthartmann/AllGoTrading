@@ -7,8 +7,6 @@ import org.yats.common.*;
 import org.yats.trading.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -42,7 +40,7 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     private void addConsumerForProductId(String productId, IConsumePriceData consumer)
     {
-        Map<String, IConsumePriceData> consumers = getConsumersOfProductId(productId);
+        Mapping<String, IConsumePriceData> consumers = getConsumersOfProductId(productId);
         consumers.put(consumer.getConsumerId().toString(), consumer);
         mapProductIdToConsumers.put(productId, consumers);
     }
@@ -205,7 +203,7 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
                 {
                     PriceData newData = priceDataMap.remove(updatedProductId);
                     rateConverter.onPriceData(newData);
-                    Map<String, IConsumePriceData> priceDataConsumers = getConsumersOfProductId(newData.getProductId());
+                    Mapping<String, IConsumePriceData> priceDataConsumers = getConsumersOfProductId(newData.getProductId());
                     for(IConsumePriceData md : priceDataConsumers.values()) {
                         md.onPriceData(newData);
                     }
@@ -247,15 +245,15 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     public StrategyRunner() {
 
-        strategyList = new Map<String, StrategyBase>();
+        strategyList = new Mapping<String, StrategyBase>();
         consumerId = UniqueId.create();
         priceFeed = new PriceFeedDummy();
         orderSender = new OrderSenderDummy();
         callbackList =new ArrayList<TimedCallback>();
-        orderMap = new Map<String, OrderNew>();
-        priceDataMap = new Map<String, PriceData>();
+        orderMap = new Mapping<String, OrderNew>();
+        priceDataMap = new Mapping<String, PriceData>();
 //        subscribedProducts = new Map<String, Product>();
-        mapProductIdToConsumers = new Map<String, Map<String, IConsumePriceData>>();
+        mapProductIdToConsumers = new Mapping<String, Mapping<String, IConsumePriceData>>();
         updatedProductQueue = new WaitingLinkedBlockingQueue<String>();
         receiptQueue = new LinkedBlockingQueue<Receipt>();
         settingsQueue = new LinkedBlockingQueue<IProvideProperties>();
@@ -273,10 +271,10 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private Map<String, IConsumePriceData> getConsumersOfProductId(String productId) {
+    private Mapping<String, IConsumePriceData> getConsumersOfProductId(String productId) {
         return mapProductIdToConsumers.containsKey(productId)
                 ? mapProductIdToConsumers.get(productId)
-                : new Map<String, IConsumePriceData>();
+                : new Mapping<String, IConsumePriceData>();
     }
 
 
@@ -330,9 +328,9 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
 
     private Thread strategyThread;
     private IProvidePriceFeed priceFeed;
-    private Map<String, Map<String, IConsumePriceData>> mapProductIdToConsumers;
-    private Map<String, PriceData> priceDataMap;
-    private Map<String, OrderNew> orderMap;
+    private Mapping<String, Mapping<String, IConsumePriceData>> mapProductIdToConsumers;
+    private Mapping<String, PriceData> priceDataMap;
+    private Mapping<String, OrderNew> orderMap;
     private LinkedBlockingQueue<Receipt> receiptQueue;
     private LinkedBlockingQueue<IProvideProperties> settingsQueue;
     private WaitingLinkedBlockingQueue<String> updatedProductQueue;
@@ -344,7 +342,7 @@ public class StrategyRunner implements IConsumeReceipt, ISendOrder,
     private boolean shutdown;
     private UniqueId consumerId;
     private RateConverter rateConverter;
-    private Map<String, StrategyBase> strategyList;
+    private Mapping<String, StrategyBase> strategyList;
     private ArrayList<TimedCallback> callbackList;
     private StrategyFactory factory;
 } // class

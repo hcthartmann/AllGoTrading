@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 08:50
  */
 
-public class Map<K,V>
+public class Mapping<K,V>
 {
 
     public Enumeration<K> keys() {
@@ -74,13 +74,12 @@ public class Map<K,V>
         return map.equals(o);
     }
 
-    public Map()
+    public Mapping()
     {
         this.map = new ConcurrentHashMap<K, V>();
     }
 
     ////////////////////////////////////////////////////////////////
-
 
     private ConcurrentHashMap<K,V> map;
 }
