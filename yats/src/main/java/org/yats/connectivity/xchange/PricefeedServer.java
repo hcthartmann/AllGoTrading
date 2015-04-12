@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 09/04/15
  * Time: 19:42
  */
-public class XPricefeedServer
+public class PricefeedServer
 {
 
 
@@ -44,17 +44,17 @@ public class XPricefeedServer
     }
 
     public static class Factory {
-        public XPricefeedServer createXPricefeedServerFromProperties(String _pricePollClassName) {
+        public PricefeedServer createXPricefeedServerFromProperties(String _pricePollClassName) {
             String propName = Tool.getPersonalSubdirConfigFilename("config", "xchanges", _pricePollClassName);
             PropertiesReader prop = PropertiesReader.createFromConfigFile(propName);
             IProvidePriceDataProvider factory = instantiatePricePollFactory(_pricePollClassName);
             IProvidePriceData priceDataProvider = factory.createFromProperties(prop);
             List<String> subscribableProductIds = new ArrayList<String>(prop.getKeySet());
 
-            XPricefeed pricefeed = new XPricefeed(subscribableProductIds, priceDataProvider);
+            Pricefeeder pricefeed = new Pricefeeder(subscribableProductIds, priceDataProvider);
             PricefeedToBusConnection pricefeedToBusConnection = new PricefeedToBusConnection.Factory().create(prop, pricefeed);
 
-            return new XPricefeedServer(pricefeedToBusConnection, pricefeed);
+            return new PricefeedServer(pricefeedToBusConnection, pricefeed);
         }
 
         public static IProvidePriceDataProvider instantiatePricePollFactory(String classname) {
@@ -75,7 +75,7 @@ public class XPricefeedServer
     }
 
 
-    public XPricefeedServer(PricefeedToBusConnection _pricefeedToBusConnection, XPricefeed _priceFeed) {
+    public PricefeedServer(PricefeedToBusConnection _pricefeedToBusConnection, Pricefeeder _priceFeed) {
         pricefeedToBusConnection = _pricefeedToBusConnection;
         priceFeed=_priceFeed;
     }
@@ -86,9 +86,9 @@ public class XPricefeedServer
 
 
     private PricefeedToBusConnection pricefeedToBusConnection;
-    private XPricefeed priceFeed;
+    private Pricefeeder priceFeed;
 
 
-    private final Logger log = LoggerFactory.getLogger(XPricefeedServer.class);
+    private final Logger log = LoggerFactory.getLogger(PricefeedServer.class);
 
 }

@@ -40,12 +40,12 @@ public class XChangeTest {
         String bfxPricePollName = BitfinexPricePoll.class.getSimpleName();
         String bfxPropName = Tool.getPersonalSubdirConfigFilename("config", "xchanges", bfxPricePollName);
         PropertiesReader bfxProp = PropertiesReader.createFromConfigFile(bfxPropName);
-        bfxFeed = XPricefeedServer.Factory.instantiatePricePollFactory(bfxPricePollName).createFromProperties(bfxProp);
+        bfxFeed = PricefeedServer.Factory.instantiatePricePollFactory(bfxPricePollName).createFromProperties(bfxProp);
 
         String btccPricePollName = BtcchinaPricePoll.class.getSimpleName();
         String btccPropName = Tool.getPersonalSubdirConfigFilename("config", "xchanges", btccPricePollName);
         PropertiesReader btccProp = PropertiesReader.createFromConfigFile(btccPropName);
-        btccFeed = XPricefeedServer.Factory.instantiatePricePollFactory(btccPricePollName).createFromProperties(btccProp);
+        btccFeed = PricefeedServer.Factory.instantiatePricePollFactory(btccPricePollName).createFromProperties(btccProp);
 
     }
 

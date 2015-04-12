@@ -2,7 +2,8 @@ package org.yats.trading;
 
 import org.yats.common.Decimal;
 
-public class OrderInMarket {
+public class OpenOrder
+{
 
 
     public OrderNew getInitialOrder() {
@@ -13,7 +14,7 @@ public class OrderInMarket {
         return remainingSize;
     }
 
-    public OrderInMarket(OrderNew _initialOrder, Decimal _remaingSize) {
+    public OpenOrder(OrderNew _initialOrder, Decimal _remaingSize) {
         initialOrder =_initialOrder;
         remainingSize=_remaingSize;
     }

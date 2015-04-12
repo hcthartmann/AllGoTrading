@@ -15,11 +15,17 @@ import java.util.List;
  * Time: 00:34
  */
 
-public class XPricefeed implements IProvidePriceFeed, Runnable {
+public class Pricefeeder implements IProvidePriceFeed, Runnable {
 
 
     public void start() {
         thread.start();
+    }
+    public boolean isRunning() {
+        return running;
+    }
+    public void shutdown() {
+        shutdown = true;
     }
 
     @Override
@@ -36,13 +42,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
         subscriptionList.put(productId,consumer);
     }
 
-    public boolean isRunning() {
-        return running;
-    }
 
-    public void shutdown() {
-        shutdown = true;
-    }
 
     @Override
     public void run() {
@@ -70,7 +70,7 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
         }
     }
 
-    public XPricefeed(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
+    public Pricefeeder(List<String> _subscribableProductIds, IProvidePriceData _priceDataProvider) {
         subscribableProductIds = _subscribableProductIds;
         priceDataProvider=_priceDataProvider;
         subscriptionList = new Mapping<String, IConsumePriceData>();
@@ -114,6 +114,6 @@ public class XPricefeed implements IProvidePriceFeed, Runnable {
     private IProvidePriceData priceDataProvider;
     private List<String> subscribableProductIds;
     private Mapping<String, PriceData> cache;
-    final private Logger log = LoggerFactory.getLogger(XPricefeed.class);
+    final private Logger log = LoggerFactory.getLogger(Pricefeeder.class);
 
 }

@@ -1,7 +1,7 @@
 package org.yats.trader.examples.server;
 
 import org.yats.connectivity.xchange.BitfinexPricePoll;
-import org.yats.connectivity.xchange.XPricefeedServer;
+import org.yats.connectivity.xchange.PricefeedServer;
 
 public class BitfinexPricefeedMain  {
 
@@ -9,7 +9,7 @@ public class BitfinexPricefeedMain  {
 
         String pricePollClassName = BitfinexPricePoll.class.getSimpleName();
 
-        XPricefeedServer q = new XPricefeedServer.Factory().createXPricefeedServerFromProperties(pricePollClassName);
+        PricefeedServer q = new PricefeedServer.Factory().createXPricefeedServerFromProperties(pricePollClassName);
 
         try {
             q.go();

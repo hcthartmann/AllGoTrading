@@ -1,7 +1,7 @@
 package org.yats.trader.examples.server;
 
+import org.yats.connectivity.xchange.PricefeedServer;
 import org.yats.connectivity.xchange.X796PricePoll;
-import org.yats.connectivity.xchange.XPricefeedServer;
 
 /**
  * Created
@@ -14,7 +14,7 @@ public class X796PricefeedMain
 
         String pricePollClassName = X796PricePoll.class.getSimpleName();
 
-        XPricefeedServer q = new XPricefeedServer.Factory().createXPricefeedServerFromProperties(pricePollClassName);
+        PricefeedServer q = new PricefeedServer.Factory().createXPricefeedServerFromProperties(pricePollClassName);
 
         try {
             q.go();

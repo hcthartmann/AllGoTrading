@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.yats.common.IAmCalledBack;
 import org.yats.common.PropertiesReader;
 import org.yats.common.UniqueId;
-import org.yats.connectivity.xchange.XPricefeed;
+import org.yats.connectivity.xchange.Pricefeeder;
 import org.yats.messagebus.BufferingReceiver;
 import org.yats.messagebus.Config;
 import org.yats.messagebus.Sender;
@@ -53,7 +53,7 @@ public class PricefeedToBusConnection implements IConsumePriceData, IAmCalledBac
 
 
     public static class Factory {
-        public PricefeedToBusConnection create(PropertiesReader _prop, XPricefeed _priceFeed) {
+        public PricefeedToBusConnection create(PropertiesReader _prop, Pricefeeder _priceFeed) {
 
             Config config =  Config.fromProperties(_prop);
             Sender<PriceDataMsg> senderPriceDataMsg
@@ -72,7 +72,7 @@ public class PricefeedToBusConnection implements IConsumePriceData, IAmCalledBac
         }
     }
 
-    public PricefeedToBusConnection(UniqueId _consumerId, XPricefeed _pricefeed,
+    public PricefeedToBusConnection(UniqueId _consumerId, Pricefeeder _pricefeed,
                                     Sender<PriceDataMsg> _senderPriceDataMsg,
                                     BufferingReceiver<SubscriptionMsg> _receiverSubscription )
     {
@@ -95,7 +95,7 @@ public class PricefeedToBusConnection implements IConsumePriceData, IAmCalledBac
     }
 
     private UniqueId consumerId;
-    private XPricefeed priceFeed;
+    private Pricefeeder priceFeed;
     private boolean shuttingDown;
     private Sender<PriceDataMsg> senderPriceDataMsg;
     private BufferingReceiver<SubscriptionMsg> receiverSubscription;
