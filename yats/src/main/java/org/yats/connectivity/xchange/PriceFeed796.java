@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.yats.common.Decimal;
 import org.yats.common.Mapping;
 import org.yats.connectivity.ConnectivityExceptions;
-import org.yats.connectivity.xchange.ApiRequest;
 import org.yats.trading.*;
 
 import java.io.IOException;
@@ -65,7 +64,7 @@ public class PriceFeed796 implements IProvidePriceData
     public OfferBook getDepth() throws IOException, JSONException {
         OfferBook offerBook = new OfferBook();
 
-        JSONObject responseData = ApiRequest.processHTTPGetRequest(ApiRequest.DEPTH_API_URL);
+        JSONObject responseData = X796ApiRequest.processHTTPGetRequest(X796ApiRequest.DEPTH_API_URL);
 
         JSONArray asksData = responseData.getJSONArray("asks");
         JSONArray bidsData = responseData.getJSONArray("bids");

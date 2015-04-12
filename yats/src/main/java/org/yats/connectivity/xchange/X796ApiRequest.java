@@ -25,17 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ApiRequest {
+public class X796ApiRequest
+{
 
     // ============================================================
     // Fields
     // ============================================================
-
-    // API Data
-    public static final String USERNAME = "ccc796";
-    public static final String APP_ID = "11370";
-    public static final String API_KEY = "ef1c64bd-4fac-1bd7-dd26-7fb1-fe09adbd";
-    public static final String SECRET_KEY = "GQB6aBgl2bkNqo4qKQ2dkW5HEh6DFJ0F5pwOqxy8F/QClXmgGtVAfE11v+46";
 
     // API Methods
     public static final String TICKER_API_URL = "http://api.796.com/v3/futures/ticker.html?type=weekly";

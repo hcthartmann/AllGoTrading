@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import org.yats.common.Decimal;
 import org.yats.common.UniqueId;
 import org.yats.connectivity.ConnectivityExceptions;
-import org.yats.connectivity.xchange.ApiRequest;
 import org.yats.trading.BookSide;
 import org.yats.trading.OrderCancel;
 import org.yats.trading.OrderNew;
@@ -57,13 +56,13 @@ public class TradeConnection796  {
         requestMap.put("secretkey", secret);
 
         // Compute the signature and add it to the request
-        String signature = ApiRequest.buildSignature(requestMap, secret);
+        String signature = X796ApiRequest.buildSignature(requestMap, secret);
         requestMap.put("sign", signature);
 
         // Remove the secret key from the request
         requestMap.remove("secretkey");
 
-        JSONObject responseData = ApiRequest.processHTTPPostRequest(ApiRequest.GET_INFO_API_URL, requestMap);
+        JSONObject responseData = X796ApiRequest.processHTTPPostRequest(X796ApiRequest.GET_INFO_API_URL, requestMap);
 
         try {
             // Load the data from the Response
@@ -99,13 +98,13 @@ public class TradeConnection796  {
         requestMap.put("secretkey", secret);
 
         // Compute the signature and add it to the request
-        String signature = ApiRequest.buildSignature(requestMap, secret);
+        String signature = X796ApiRequest.buildSignature(requestMap, secret);
         requestMap.put("sign", signature);
 
         // Remove the secret key from the request
         requestMap.remove("secretkey");
 
-        JSONObject responseData = ApiRequest.processHTTPPostRequest(ApiRequest.GET_ASSETS_API_URL, requestMap);
+        JSONObject responseData = X796ApiRequest.processHTTPPostRequest(X796ApiRequest.GET_ASSETS_API_URL, requestMap);
         JSONObject dataJson = responseData.getJSONObject("data");
 
         // Add the data for BTC
@@ -141,13 +140,13 @@ public class TradeConnection796  {
             requestMap.put("sell_price", newOrder.getLimit().toString());
 
             // Compute the signature and add it to the request
-            String signature = ApiRequest.buildSignature(requestMap, secret);
+            String signature = X796ApiRequest.buildSignature(requestMap, secret);
             requestMap.put("sign", signature);
 
             // Remove the secret key from the request
             requestMap.remove("secretkey");
 
-            JSONObject responseData = ApiRequest.processHTTPPostRequest(ApiRequest.SELL_ORDER_API_URL, requestMap);
+            JSONObject responseData = X796ApiRequest.processHTTPPostRequest(X796ApiRequest.SELL_ORDER_API_URL, requestMap);
             JSONObject dataJson = responseData.getJSONObject("data");
 
             if (responseData.getInt("errno") == 0) {
@@ -170,13 +169,13 @@ public class TradeConnection796  {
             requestMap.put("buy_price", newOrder.getLimit().toString());
 
             // Compute the signature and add it to the request
-            String signature = ApiRequest.buildSignature(requestMap, secret);
+            String signature = X796ApiRequest.buildSignature(requestMap, secret);
             requestMap.put("sign", signature);
 
             // Remove the secret key from the request
             requestMap.remove("secretkey");
 
-            JSONObject responseData = ApiRequest.processHTTPPostRequest(ApiRequest.BUY_ORDER_API_URL, requestMap);
+            JSONObject responseData = X796ApiRequest.processHTTPPostRequest(X796ApiRequest.BUY_ORDER_API_URL, requestMap);
             JSONObject dataJson = responseData.getJSONObject("data");
 
             if (responseData.getInt("errno") == 0) {
@@ -213,13 +212,13 @@ public class TradeConnection796  {
         requestMap.put("no", orderCancel.getOrderIdString());
 
         // Compute the signature and add it to the request
-        String signature = ApiRequest.buildSignature(requestMap, secret);
+        String signature = X796ApiRequest.buildSignature(requestMap, secret);
         requestMap.put("sign", signature);
 
         // Remove the secret key from the request
         requestMap.remove("secretkey");
 
-        JSONObject responseData = ApiRequest.processHTTPPostRequest(ApiRequest.CANCEL_ORDER_API_URL, requestMap);
+        JSONObject responseData = X796ApiRequest.processHTTPPostRequest(X796ApiRequest.CANCEL_ORDER_API_URL, requestMap);
 
         if (responseData.getInt("errno") == 0) {
             System.out.println(responseData.getString("msg"));
@@ -244,13 +243,13 @@ public class TradeConnection796  {
         requestMap.put("no", orderCancel.getOrderIdString());
 
         // Compute the signature and add it to the request
-        String signature = ApiRequest.buildSignature(requestMap, secret);
+        String signature = X796ApiRequest.buildSignature(requestMap, secret);
         requestMap.put("sign", signature);
 
         // Remove the secret key from the request
         requestMap.remove("secretkey");
 
-        JSONObject responseData = ApiRequest.processHTTPPostRequest(ApiRequest.CANCEL_ALL_ORDERS_API_URL, requestMap);
+        JSONObject responseData = X796ApiRequest.processHTTPPostRequest(X796ApiRequest.CANCEL_ALL_ORDERS_API_URL, requestMap);
 
         if (responseData.getInt("errno") == 0) {
             System.out.println(responseData.getString("msg"));
