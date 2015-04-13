@@ -73,6 +73,10 @@ public class TradingConnection implements Runnable, IConsumeOrders
             if(receipt.isSameAs(updatedReceipt)) continue;
             mapOid2Receipt.put(updatedReceipt.getOrderIdString(), updatedReceipt);
             receiptConsumer.onReceipt(updatedReceipt);
+            if(updatedReceipt.isEndState()) {
+                tradingProvider.clearReceipt(updatedReceipt.getOrderId());
+                mapOid2Receipt.remove(updatedReceipt.getOrderIdString());
+            }
         }
     }
 

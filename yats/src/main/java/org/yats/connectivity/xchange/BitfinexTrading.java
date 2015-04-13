@@ -33,6 +33,14 @@ public class BitfinexTrading implements IProvideTrading
 {
 
     @Override
+    public void clearReceipt(UniqueId orderId) {
+        if(!mapOid2Xid.containsKey(orderId.toString())) return;
+        String xId = mapOid2Xid.get(orderId.toString());
+        mapOid2Xid.remove(orderId.toString());
+        mapXid2Receipt.remove(xId);
+    }
+
+    @Override
     public boolean login() {
         Mapping<String, Decimal> map = getAssets();
         return map.containsKey("trading_usd");
@@ -115,8 +123,7 @@ public class BitfinexTrading implements IProvideTrading
 
         try {
             BitfinexOrderStatusResponse response = tradeService.placeBitfinexLimitOrder(limitOrder, BitfinexOrderType.MARGIN_LIMIT, false);
-            Receipt receipt = newOrder.createReceiptDefault()
-                    .withExternalAccount("margin");
+            Receipt receipt = newOrder.createReceiptDefault().withExternalAccount("margin");
             updateReceiptFromResponse(receipt, response);
             String xId = ""+response.getId();
             mapXid2Receipt.put(xId, receipt);

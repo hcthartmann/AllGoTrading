@@ -21,6 +21,7 @@ public interface IProvideTrading extends IConsumeOrders
 
         public void cancelAllOrders();
 
+        public void clearReceipt(UniqueId orderId);
         public void updateReceipts();
         public Receipt getReceipt(UniqueId orderId);
         public Mapping<String,Receipt> getOpenOrderMap();
