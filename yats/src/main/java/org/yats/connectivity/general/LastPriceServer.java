@@ -49,7 +49,7 @@ public class LastPriceServer implements IConsumePriceData, IAmCalledBack {
     @Override
     public synchronized void onCallback() {
         while(receiverSubscription.hasMoreMessages()) {
-            String productId = receiverSubscription.get().productId;
+            String productId = receiverSubscription.take().productId;
             if(cache.containsKey(productId)) {
                 PriceDataMsg d = PriceDataMsg.createFrom(cache.get(productId));
                 senderPriceDataMsg.publish(d.getTopic(), d);

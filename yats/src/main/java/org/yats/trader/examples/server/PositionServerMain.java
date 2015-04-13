@@ -80,7 +80,7 @@ public class PositionServerMain implements IAmCalledBack {
         while(receiverReceipts.hasMoreMessages()) {
             gotNewReceipt=true;
             try {
-                positionServer.onReceipt(receiverReceipts.get().toReceipt());
+                positionServer.onReceipt(receiverReceipts.take().toReceipt());
             } catch(TradingExceptions.UnknownIdException e) {
                 log.error(e.getMessage());
             }
@@ -92,7 +92,7 @@ public class PositionServerMain implements IAmCalledBack {
     }
 
     private void receiveNewPositionSnapshot() {
-        PositionSnapshotMsg p = receiverPositionSnapshots.get();
+        PositionSnapshotMsg p = receiverPositionSnapshots.take();
         if(gotSnapshotOnce) return;
         gotSnapshotOnce=true;
         PositionSnapshot s = p.toPositionSnapshot();
@@ -102,7 +102,7 @@ public class PositionServerMain implements IAmCalledBack {
     }
 
     private void answerPositionRequest() {
-        receiverPositionRequests.get();
+        receiverPositionRequests.take();
         publishPositionSnapshot();
     }
 

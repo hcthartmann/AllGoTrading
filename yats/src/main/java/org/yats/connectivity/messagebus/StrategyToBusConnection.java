@@ -204,7 +204,7 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
     private void sendAllReceivedPriceData() {
         DateTime start = DateTime.now();
         while(receiverPriceData.hasMoreMessages()) {
-            PriceDataMsg m = receiverPriceData.get();
+            PriceDataMsg m = receiverPriceData.take();
             priceDataMap.put(m.productId, m);
         }
         List<PriceData> list = new ArrayList<PriceData>();
@@ -223,7 +223,7 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
 
     private void sendAllReceivedReceipts() {
         while(receiverReceipt.hasMoreMessages()) {
-            Receipt r = receiverReceipt.get().toReceipt();
+            Receipt r = receiverReceipt.take().toReceipt();
 //            log.debug("Received receipt (StrategyToBusConnection): "+r);
             receiptConsumer.onReceipt(r);
         }
@@ -232,7 +232,7 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
     private void sendAllReceivedSettings() {
         if(receiverSettings==null) return;
         while(receiverSettings.hasMoreMessages()) {
-            IProvideProperties p = receiverSettings.get().toProperties();
+            IProvideProperties p = receiverSettings.take().toProperties();
             settingsConsumer.onSettings(p);
         }
     }
@@ -240,7 +240,7 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
     private void sendAllReceivedReports() {
         if(receiverReports==null) return;
         while(receiverReports.hasMoreMessages()) {
-            KeyValueMsg m = receiverReports.get();
+            KeyValueMsg m = receiverReports.take();
             String strategyName="unknown";
             IProvideProperties p = m.toProperties();
             if(p.exists(StrategyBase.SETTING_STRATEGYNAME)) strategyName = p.get(StrategyBase.SETTING_STRATEGYNAME);
@@ -256,7 +256,7 @@ public class StrategyToBusConnection implements IProvidePriceFeed, IProvideBulkP
 
     private void sendAllReceivedPositionSnapshots() {
         while(receiverPositionSnapshot.hasMoreMessages()) {
-            PositionSnapshotMsg m = receiverPositionSnapshot.get();
+            PositionSnapshotMsg m = receiverPositionSnapshot.take();
             if(receiverPositionSnapshot.hasMoreMessages()) continue;
             positionSnapshotConsumer.onPositionSnapshot(m.toPositionSnapshot());
         }

@@ -57,7 +57,7 @@ public class ReceiptStorageMain implements IAmCalledBack {
     @Override
     public synchronized void onCallback() {
         while(receiverReceipt.hasMoreMessages()) {
-            ReceiptMsg m = receiverReceipt.get();
+            ReceiptMsg m = receiverReceipt.take();
             Receipt r = m.toReceipt();
             log.info(r.toString());
             storage.onReceipt(r);

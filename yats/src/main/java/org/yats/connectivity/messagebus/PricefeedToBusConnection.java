@@ -88,7 +88,7 @@ public class PricefeedToBusConnection implements IConsumePriceData, IAmCalledBac
     private void subscribeAllReceivedSubscriptions()  {
         while(receiverSubscription.hasMoreMessages()) {
             if(shuttingDown) return;
-            SubscriptionMsg m = receiverSubscription.get();
+            SubscriptionMsg m = receiverSubscription.take();
             log.info("Subscription received and forwarded for "+m.productId);
             priceFeed.subscribe(m.productId, this);
         }

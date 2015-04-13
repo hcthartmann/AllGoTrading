@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.yats.common.Decimal;
 import org.yats.common.UniqueId;
-
+import org.yats.messagebus.messages.ReceiptMsg;
 
 
 public class Receipt {
@@ -59,6 +59,13 @@ public class Receipt {
 
     public boolean isPartialFill() {
         return !residualSize.isEqualTo(Decimal.ZERO);
+    }
+
+    public boolean isSameAs(Receipt other) {
+        String receiptString = toString();
+        String otherString = other.toString();
+        boolean equal = receiptString.equals(otherString);
+        return equal;
     }
 
     private void adjustByTradedSize(Decimal _currentTradedSize) {

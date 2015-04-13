@@ -21,7 +21,13 @@ public class BitfinexTradingTest {
         PriceData p = bfxFeed.getPriceData("BFX_XBTUSD");
         OfferBook book = p.getBook();
         Assert.assertTrue(book.getDepth(BookSide.BID) > 10);
-        Assert.assertTrue(book.getDepth(BookSide.ASK)>10);
+        Assert.assertTrue(book.getDepth(BookSide.ASK) > 10);
+    }
+
+    @Test(groups = { "trading" })
+    public void canLogin()
+    {
+        Assert.assertTrue(bfxTrading.login());
     }
 
     @Test(groups = { "trading" })

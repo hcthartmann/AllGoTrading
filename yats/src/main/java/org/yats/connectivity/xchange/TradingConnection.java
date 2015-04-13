@@ -28,12 +28,23 @@ public class TradingConnection implements Runnable, IConsumeOrders
 
     @Override
     public void sendOrderNew(OrderNew newOrder) {
-
+        if(!mapTradablePid2XPid.containsKey(newOrder.getProductId())) return;
+        Receipt receipt = newOrder.createReceiptDefault();
+        mapOid2Receipt.put(receipt.getOrderIdString(), receipt);
+        try {
+            tradingProvider.sendOrderNew(newOrder);
+        }catch(RuntimeException r) {
+            r.printStackTrace();
+            receipt.setEndState(true);
+            receipt.setRejectReason(r.getMessage());
+        }
+        receiptConsumer.onReceipt(receipt);
     }
 
     @Override
     public void sendOrderCancel(OrderCancel o) {
-
+        if(!mapTradablePid2XPid.containsKey(o.getProductId())) return;
+        tradingProvider.sendOrderCancel(o);
     }
 
     @Override
@@ -42,6 +53,8 @@ public class TradingConnection implements Runnable, IConsumeOrders
         {
             try {
                 Thread.yield();
+                tradingProvider.updateReceipts();
+                sendChangedReceipts();
                 sleepABitIfNotShuttingDown(5000);
             }
             catch(RuntimeException r) {
@@ -50,13 +63,28 @@ public class TradingConnection implements Runnable, IConsumeOrders
             }
         }
         running=false;
-
     }
 
-    public TradingConnection(Mapping<String, String> mapTradablePid2XPid, IProvideTrading tradingProvider)
+    private void sendChangedReceipts()
     {
-        this.mapTradablePid2XPid = mapTradablePid2XPid;
-        this.tradingProvider = tradingProvider;
+        for(Receipt receipt : mapOid2Receipt.values()) {
+            if(receipt.isEndState()) continue;
+            Receipt updatedReceipt = tradingProvider.getReceipt(receipt.getOrderId());
+            if(receipt.isSameAs(updatedReceipt)) continue;
+            mapOid2Receipt.put(updatedReceipt.getOrderIdString(), updatedReceipt);
+            receiptConsumer.onReceipt(updatedReceipt);
+        }
+    }
+
+    public TradingConnection(Mapping<String, String> _mapTradablePid2XPid, IProvideTrading _tradingProvider, IConsumeReceipt _receiptConsumer)
+    {
+        mapTradablePid2XPid = _mapTradablePid2XPid;
+        tradingProvider = _tradingProvider;
+        receiptConsumer = _receiptConsumer;
+        mapOid2Receipt = new Mapping<String, Receipt>();
+        thread = new Thread(this);
+        running=false;
+        shutdown=false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,6 +103,10 @@ public class TradingConnection implements Runnable, IConsumeOrders
     private Mapping<String,String> mapTradablePid2XPid;
     private IProvideTrading tradingProvider;
     private Thread thread;
+    private Mapping<String, Receipt> mapOid2Receipt;
+    private IConsumeReceipt receiptConsumer;
+
+
     final private Logger log = LoggerFactory.getLogger(TradingConnection.class);
 
 }

@@ -1,20 +1,17 @@
 package org.yats.connectivity.xchange;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.xeiam.xchange.Exchange;
 import com.xeiam.xchange.ExchangeFactory;
 import com.xeiam.xchange.ExchangeSpecification;
 import com.xeiam.xchange.bitfinex.v1.BitfinexExchange;
 import com.xeiam.xchange.bitfinex.v1.BitfinexOrderType;
 import com.xeiam.xchange.bitfinex.v1.dto.account.BitfinexBalancesResponse;
-import com.xeiam.xchange.bitfinex.v1.dto.trade.BitfinexCreditResponse;
 import com.xeiam.xchange.bitfinex.v1.dto.trade.BitfinexOrderStatusResponse;
 import com.xeiam.xchange.bitfinex.v1.service.polling.BitfinexAccountServiceRaw;
 import com.xeiam.xchange.bitfinex.v1.service.polling.BitfinexTradeServiceRaw;
 import com.xeiam.xchange.currency.CurrencyPair;
 import com.xeiam.xchange.dto.Order;
 import com.xeiam.xchange.dto.trade.LimitOrder;
-import com.xeiam.xchange.service.polling.trade.PollingTradeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.Decimal;
@@ -25,9 +22,6 @@ import org.yats.connectivity.ConnectivityExceptions;
 import org.yats.trading.*;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created
@@ -39,8 +33,9 @@ public class BitfinexTrading implements IProvideTrading
 {
 
     @Override
-    public void login() {
-
+    public boolean login() {
+        Mapping<String, Decimal> map = getAssets();
+        return map.containsKey("trading_usd");
     }
 
     @Override
@@ -111,8 +106,9 @@ public class BitfinexTrading implements IProvideTrading
     {
 
         Order.OrderType side = newOrder.getBookSide()== BookSide.BID ? Order.OrderType.BID:Order.OrderType.ASK;
+        CurrencyPair pair = mapPid2Bfxid.get(newOrder.getProductId());
         LimitOrder limitOrder = new LimitOrder
-                .Builder(side, CurrencyPair.BTC_USD)
+                .Builder(side, pair)
                 .limitPrice(newOrder.getLimit().toBigDecimal())
                 .tradableAmount(newOrder.getSize().toBigDecimal())
                 .build();
@@ -161,16 +157,22 @@ public class BitfinexTrading implements IProvideTrading
             exchange.applySpecification(bfxSpec);
             BitfinexTradeServiceRaw tradeService = (BitfinexTradeServiceRaw) exchange.getPollingTradeService();
             BitfinexAccountServiceRaw accountService = (BitfinexAccountServiceRaw) exchange.getPollingAccountService();
-            return new BitfinexTrading(tradeService,accountService);
+            return new BitfinexTrading(tradeService, accountService);
         }
     }
 
-    public BitfinexTrading(BitfinexTradeServiceRaw _tradeService, BitfinexAccountServiceRaw _accountService)
+    public BitfinexTrading(
+            BitfinexTradeServiceRaw _tradeService,
+            BitfinexAccountServiceRaw _accountService)
     {
         tradeService = _tradeService;
         accountService = _accountService;
         mapXid2Receipt = new Mapping<String, Receipt>();
         mapOid2Xid = new Mapping<String, String>();
+        mapPid2Bfxid = new Mapping<String, CurrencyPair>();
+        mapPid2Bfxid.put("BFX_XBTUSD", CurrencyPair.BTC_USD);
+        mapPid2Bfxid.put("BFX_LTCUSD", CurrencyPair.LTC_USD);
+        mapPid2Bfxid.put("BFX_LTCBTC", CurrencyPair.LTC_BTC);
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +188,7 @@ public class BitfinexTrading implements IProvideTrading
     private BitfinexAccountServiceRaw accountService;
     private Mapping<String, Receipt> mapXid2Receipt;
     private Mapping<String, String> mapOid2Xid;
+    private Mapping<String, CurrencyPair> mapPid2Bfxid;
 
     final private Logger log = LoggerFactory.getLogger(BitfinexTrading.class);
 }

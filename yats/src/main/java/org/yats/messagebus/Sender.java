@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class Sender<T>
 {
-    final Logger log = LoggerFactory.getLogger(Sender.class);
 
     public void publish(String topic, T msg)
     {
@@ -75,4 +74,5 @@ public class Sender<T>
     private String exchangeName;
     private String rabbitServerAddress;
 
+    final Logger log = LoggerFactory.getLogger(Sender.class);
 }

@@ -143,7 +143,7 @@ public class InternalMarketRunner implements IAmCalledBack, IConsumePriceDataAnd
 
     private void sendAllReceivedSubscriptionToMarket() {
         while(receiverSubscription.hasMoreMessages()) {
-            SubscriptionMsg m = receiverSubscription.get();
+            SubscriptionMsg m = receiverSubscription.take();
             if(!productList.containsProductWith(m.productId)) {
                 log.debug("Attempt to subscribe for unknown product: "+m.productId);
                 continue;
@@ -156,7 +156,7 @@ public class InternalMarketRunner implements IAmCalledBack, IConsumePriceDataAnd
 
     private void sendAllReceivedOrderCancelToMarket() {
         while(receiverOrderCancel.hasMoreMessages()) {
-            OrderCancelMsg m = receiverOrderCancel.get();
+            OrderCancelMsg m = receiverOrderCancel.take();
             OrderCancel o = m.toOrderCancel();
             log.info("received OrderCancel: "+o);
             orderCancelQueue.add(o);
@@ -166,7 +166,7 @@ public class InternalMarketRunner implements IAmCalledBack, IConsumePriceDataAnd
 
     private void sendAllReceivedOrderNewToMarket() {
         while(receiverOrderNew.hasMoreMessages()) {
-            OrderNewMsg m = receiverOrderNew.get();
+            OrderNewMsg m = receiverOrderNew.take();
             OrderNew o = m.toOrderNew();
             log.info("received OrderNew: "+o);
             orderNewQueue.add(o);

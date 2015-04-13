@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface IProvideTrading extends IConsumeOrders
 {
-        public void login();
+        public boolean login();
 
         public Mapping<String, Decimal> getAssets();
 

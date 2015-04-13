@@ -3,6 +3,7 @@ package org.yats.connectivity.xchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yats.common.*;
+import org.yats.connectivity.messagebus.BusToExchangeConnection;
 import org.yats.connectivity.messagebus.ExchangeToBusConnection;
 import org.yats.trading.IProvideTrading;
 import org.yats.trading.IProvideTradingProvider;
@@ -21,7 +22,7 @@ public class TradingServer
     {
         tradingConnection.start();
         Thread.sleep(500);
-        exchangeToBusConnection.start();
+        busToExchangeConnection.start();
 
         System.out.println("\n===");
         System.out.println("Initialization done.");
@@ -30,7 +31,7 @@ public class TradingServer
         System.in.read();
         System.out.println("\nexiting...\n");
 
-        exchangeToBusConnection.shutdown();
+        busToExchangeConnection.shutdown();
         Thread.sleep(500);
         tradingConnection.shutdown();
         Thread.sleep(500);
@@ -47,10 +48,11 @@ public class TradingServer
             IProvideTrading tradingProvider = factory.createFromProperties(prop);
             Mapping<String,String> mapTradablePid2XPid = prop.toMap();
 
-            TradingConnection tradingConnection = new TradingConnection(mapTradablePid2XPid, tradingProvider);
-            ExchangeToBusConnection exchangeToBusConnection = new ExchangeToBusConnection.Factory().create(prop, tradingConnection);
+            ExchangeToBusConnection exchangeToBusConnection = new ExchangeToBusConnection.Factory().create(prop);
+            TradingConnection tradingConnection = new TradingConnection(mapTradablePid2XPid, tradingProvider, exchangeToBusConnection);
+            BusToExchangeConnection busToExchangeConnection = new BusToExchangeConnection.Factory().create(prop, tradingConnection);
 
-            return new TradingServer(exchangeToBusConnection, tradingConnection);
+            return new TradingServer(busToExchangeConnection, tradingConnection);
         }
 
         public static IProvideTradingProvider instantiateTradingFactory(String classname) {
@@ -70,20 +72,17 @@ public class TradingServer
 
     }
 
-
-    public TradingServer(ExchangeToBusConnection _exchangeToBusConnection, TradingConnection _tradingConnection) {
-        exchangeToBusConnection = _exchangeToBusConnection;
+    public TradingServer(BusToExchangeConnection _busToExchangeConnection,
+                         TradingConnection _tradingConnection)
+    {
+        busToExchangeConnection = _busToExchangeConnection;
         tradingConnection =_tradingConnection;
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////
 
-
-
-    private ExchangeToBusConnection exchangeToBusConnection;
+    private BusToExchangeConnection busToExchangeConnection;
     private TradingConnection tradingConnection;
 
-
-    private final Logger log = LoggerFactory.getLogger(PricefeedServer.class);
+    private final Logger log = LoggerFactory.getLogger(TradingServer.class);
 }

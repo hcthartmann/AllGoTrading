@@ -16,7 +16,7 @@ public class BufferingReceiver<T> implements Runnable, IAmCalledBack {
         return buffer.size()>0;
     }
 
-    public T get() {
+    public T take() {
         try {
             return buffer.take();
         } catch (InterruptedException e) {

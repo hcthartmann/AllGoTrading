@@ -76,7 +76,7 @@ public class MarketToBusConnection extends StrategyBase implements IAmCalledBack
 
     private void sendAllReceivedSubscription()  {
         while(receiverSubscription.hasMoreMessages()) {
-            SubscriptionMsg m = receiverSubscription.get();
+            SubscriptionMsg m = receiverSubscription.take();
             try {
                 Product p = getProductForProductId(m.productId);
                 subscribe(p.getProductId());
@@ -88,7 +88,7 @@ public class MarketToBusConnection extends StrategyBase implements IAmCalledBack
 
     private void sendAllReceivedOrderNew() {
         while(receiverOrderNew.hasMoreMessages()) {
-            OrderNewMsg m = receiverOrderNew.get();
+            OrderNewMsg m = receiverOrderNew.take();
             OrderNew o = m.toOrderNew();
             sendNewOrder(o);
             log.info("Sent "+o);
@@ -97,7 +97,7 @@ public class MarketToBusConnection extends StrategyBase implements IAmCalledBack
 
     private void sendAllReceivedOrderCancel() {
         while(receiverOrderCancel.hasMoreMessages()) {
-            OrderCancelMsg m = receiverOrderCancel.get();
+            OrderCancelMsg m = receiverOrderCancel.take();
             OrderCancel o = m.toOrderCancel();
             sendOrderCancel(o);
             log.info("Sent "+o);
