@@ -1,7 +1,6 @@
 AllGoTrading
 ============
 
-
 This open source project provides a trading API with FIX connectivity to the AllGoTrading website. Active development effort by users is required for further development of the API and their own trading strategies. 
 
 There exists a compensation scheme for contributers intended to give incentive to push this open source project further. Details are posted in the AllGoTrading forum. To participate in the forum please visit allgotrading.com. You find a [current list of milestones](http://www.allgotrading.com/allgotrading/forum/viewtopic.php?f=1&t=33) with some incentives.
@@ -14,6 +13,11 @@ A simple example strategy shows how to receive market data, send new orders and 
 
 
 [Tutorial 2](https://www.youtube.com/watch?v=3Wq3p5LPhQU): IDEA config, unit tests, example setup
+
+Compiling:
+
+**** if you have this problem: "tried to access field org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory at org.slf4j.LoggerFactory.<clinit>(LoggerFactory.java"
+**** try solving it by removing the old org.slf4j dependency from org.apache.mina:mina-core:1.1.7
 
 
 

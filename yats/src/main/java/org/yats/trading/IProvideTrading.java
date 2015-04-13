@@ -3,6 +3,7 @@ package org.yats.trading;
 
 import org.yats.common.Decimal;
 import org.yats.common.Mapping;
+import org.yats.common.UniqueId;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public interface IProvideTrading extends IConsumeOrders
 
         public void cancelAllOrders();
 
-        public List<OpenOrder> getOpenOrderList();
+        public void updateReceipts();
+        public Receipt getReceipt(UniqueId orderId);
+        public Mapping<String,Receipt> getOpenOrderMap();
 }

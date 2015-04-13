@@ -52,6 +52,10 @@ public class PropertiesReader implements IProvideProperties {
         return createFromConfigString(configStringDefault);
     }
 
+    public static PropertiesReader createFromPersonalSubdir(String pathBase, String subDir, String className) {
+        String propFilename = Tool.getPersonalSubdirConfigFilename(pathBase, subDir, className);
+        return PropertiesReader.createFromConfigFile(propFilename);
+    }
 
     public static PropertiesReader createFromConfigFile(String pathToConfigFile)
     {

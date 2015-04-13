@@ -4,6 +4,8 @@ import org.yats.common.Decimal;
 
 public class TestPriceData {
 
+    public static final String PROD_BFX_XBTUSD = "BFX_XBTUSD";
+
     public static final String TEST_EUR_PID = "TEST_CCY_EUR";
     public static final String TEST_USD_PID = "TEST_CCY_USD";
     public static final String TEST_CHF_PID = "TEST_CCY_CHF";

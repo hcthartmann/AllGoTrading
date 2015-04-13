@@ -264,7 +264,7 @@ public class TradeConnection796  {
 //     *
 //     */
 //    @Override
-//    public List<OrderInMarket> getOpenOrderList() throws IOException, JSONException {
+//    public List<OrderInMarket> getOpenOrderMap() throws IOException, JSONException {
 //        List<OrderInMarket> orderList = new ArrayList<OrderInMarket>();
 //
 //        Map<String, String> requestMap = new TreeMap<String, String>();

@@ -87,7 +87,7 @@ public class InternalMarketTest implements IConsumeReceipt, IConsumePriceData {
 
         int counter=1;
         for(Receipt r : snapshot) {
-            OrderCancel c = r.createOrderCancel(r);
+            OrderCancel c = r.createOrderCancel();
             market.sendOrderCancel(c);
             Decimal expected = bid133.getLimit().add(Decimal.fromString("0.99"));
             if(counter<99) assert(lastPriceData.getBid().isEqualTo(expected));
@@ -111,7 +111,7 @@ public class InternalMarketTest implements IConsumeReceipt, IConsumePriceData {
         Decimal expected = ask135.getLimit().subtract(Decimal.fromString("0.98"));
         int counter=1;
         for(Receipt r : snapshot) {
-            OrderCancel c = r.createOrderCancel(r);
+            OrderCancel c = r.createOrderCancel();
             market.sendOrderCancel(c);
             if(counter<99) assert(lastPriceData.getAsk().isEqualTo(expected));
             if(counter==99) assert(lastPriceData.isBookSideEmpty(BookSide.ASK));

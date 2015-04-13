@@ -349,11 +349,11 @@ public class Receipt {
         return _orderId.compareTo(orderId.toString()) == 0;
     }
 
-    public OrderCancel createOrderCancel(Receipt r) {
+    public OrderCancel createOrderCancel() {
         OrderCancel c = new OrderCancel()
-                .withBookSide(r.getBookSide())
-                .withOrderId(r.getOrderId())
-                .withProductId(r.getProductId())
+                .withBookSide(getBookSide())
+                .withOrderId(getOrderId())
+                .withProductId(getProductId())
                 ;
         return c;
     }

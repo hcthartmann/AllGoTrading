@@ -2,7 +2,7 @@
   <library name="org.apache.httpcomponents:httpcore:4.4.1" type="repository">
     <properties maven-id="org.apache.httpcomponents:httpcore:4.4.1" />
     <CLASSES>
-      <root url="jar://C:/Users/holger/.m2/repository/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

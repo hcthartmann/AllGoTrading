@@ -52,7 +52,7 @@ public class TradeConnection796Test {
 //        trade796.sendOrderNew(order1);
 //        trade796.sendOrderNew(order2);
 //
-//        List<OrderInMarket> orderList = trade796.getOpenOrderList();
+//        List<OrderInMarket> orderList = trade796.getOpenOrderMap();
 //
 //        // check that the above orders made it into the market
 //
@@ -66,20 +66,20 @@ public class TradeConnection796Test {
 //
 //        trade796.sendOrderCancel(OrderCancel.fromOrderNew(orderList.get(0).getInitialOrder()));
 //
-//        List<OrderInMarket> orderListAfterFirstCancel = trade796.getOpenOrderList();
+//        List<OrderInMarket> orderListAfterFirstCancel = trade796.getOpenOrderMap();
 //        Assert.assertTrue(orderListAfterFirstCancel.size()==1);
 //
 //        trade796.sendOrderNew(order3);
 //        trade796.sendOrderCancel(OrderCancel.fromOrderNew(orderListAfterFirstCancel.get(0).getInitialOrder()));
 //
-//        List<OrderInMarket> orderListAfterSecondCancel = trade796.getOpenOrderList();
+//        List<OrderInMarket> orderListAfterSecondCancel = trade796.getOpenOrderMap();
 //        Assert.assertTrue(orderListAfterSecondCancel.size()==1);
 //        Assert.assertTrue(orderListAfterSecondCancel.get(0).getInitialOrder().getBookSide()==BookSide.ASK);
 //
 //        // getting rid of the ASK order...
 //        trade796.sendOrderCancel(OrderCancel.fromOrderNew(orderListAfterSecondCancel.get(0).getInitialOrder()));
 //
-//        List<OrderInMarket> orderListAfterThirdCancel = trade796.getOpenOrderList();
+//        List<OrderInMarket> orderListAfterThirdCancel = trade796.getOpenOrderMap();
 //        Assert.assertTrue(orderListAfterThirdCancel.size()==0);
 //
 //    }

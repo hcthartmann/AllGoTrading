@@ -15,16 +15,7 @@ import org.yats.trading.PriceData;
  * Time: 22:28
  */
 
-public class XChangeTest {
-
-    @Test(groups = { "internet" })
-    public void canGetPriceDataFromBitfinex()
-    {
-        PriceData p = bfxFeed.getPriceData("BFX_XBTUSD");
-        OfferBook book = p.getBook();
-        Assert.assertTrue(book.getDepth(BookSide.BID)>10);
-        Assert.assertTrue(book.getDepth(BookSide.ASK)>10);
-    }
+public class XChangePricefeedTest {
 
     @Test(groups = { "internet" })
     public void canGetPriceDataFromBtcchina()
@@ -37,11 +28,6 @@ public class XChangeTest {
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
-        String bfxPricePollName = BitfinexPricePoll.class.getSimpleName();
-        String bfxPropName = Tool.getPersonalSubdirConfigFilename("config", "xchanges", bfxPricePollName);
-        PropertiesReader bfxProp = PropertiesReader.createFromConfigFile(bfxPropName);
-        bfxFeed = PricefeedServer.Factory.instantiatePricePollFactory(bfxPricePollName).createFromProperties(bfxProp);
-
         String btccPricePollName = BtcchinaPricePoll.class.getSimpleName();
         String btccPropName = Tool.getPersonalSubdirConfigFilename("config", "xchanges", btccPricePollName);
         PropertiesReader btccProp = PropertiesReader.createFromConfigFile(btccPropName);
@@ -53,7 +39,7 @@ public class XChangeTest {
     ///////////////////////////////////////////////////////////////
 
 
-    private IProvidePriceData bfxFeed;
+
 
     private IProvidePriceData btccFeed;
 
